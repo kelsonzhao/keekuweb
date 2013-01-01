@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd"> 
+<tiles-definitions>
+	<definition name="mainLayoutTemplate" template="/WEB-INF/views/jsp/layouts/mainLayoutTemplate.jsp">
+		<!-- <put-attribute name="title"></put-attribute> 在具体的页面中设置Title-->
+		<!-- <put-attribute name="content"></put-attribute> 具体的页面内容-->
+		<!-- <put-attribute name="resource"></put-attribute> 具体页面引入的资源-->
+		<put-attribute name="left-sidebar" value="/WEB-INF/views/jsp/common/left-sidebar.jsp" />
+		<put-attribute name="right-sidebar" value="/WEB-INF/views/jsp/common/right-sidebar.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/jsp/common/footer.jsp"/>
+	</definition>
+	<definition name="home" extends="mainLayoutTemplate">
+		<put-attribute name="title" value="Keeku" />
+		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
+	</definition>
+
+</tiles-definitions>
