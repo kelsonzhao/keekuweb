@@ -9,13 +9,13 @@
 <body class="main-page">
 <div class="container">
 	<div id="container-top">
-		<div id="left-sidebar">
+		<div id="left-sidebar" >
 			<tiles:insertAttribute name="left-sidebar" />
 		</div>
 		<div id="right-sidebar">
 			<tiles:insertAttribute name="right-sidebar" />
 		</div>
-		<div id="content">
+		<div id="content" >
 			<tiles:insertAttribute name="content" />
 		</div>
 	</div>
