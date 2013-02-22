@@ -1,10 +1,12 @@
 package com.kelson.keeku.repository;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.util.Assert;
 
 import com.kelson.keeku.BaseTest;
 import com.kelson.keeku.domain.User;
@@ -42,8 +44,14 @@ public class UserTest extends BaseTest {
 		user.setStyleId(2);
 		user.setTopicPerPage(20);
 		user.setUserName("KelsonZhao");
+		user.setPassword("123456");
 		user.setWeibo_sina("http://weibo.com/kelson");
 		ur.save(user);
+	}
+	@Test
+	public void getAllUser() {
+		List<User> ret = ur.findAll();
+		Assert.notEmpty(ret);
 	}
 	
 	@Test

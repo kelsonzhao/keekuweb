@@ -1,5 +1,5 @@
 /*
- * Copyright 2010~2013 the original author or authors.
+ * Copyright 2010~2013 keeku.co.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.kelson.keeku.repository;
+package com.kelson.keeku.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import com.kelson.keeku.domain.User;
-/**
- * 
-* @ClassName: UserRepository 
-* @Description: 用户信息Dao
-* @author Kelson 
-* @date 2013-1-27 上午1:39:34 
-* @version 1.0
- */
-@Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+import com.kelson.keeku.domain.Thread;
+
+public interface ForumService {
 	
-	public User findByUserName(String userName);
+	public Page<Thread>  listThreads(Pageable pageable) ;
 
 }

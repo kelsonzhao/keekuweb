@@ -13,23 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.kelson.keeku.repository;
+package com.kelson.keeku.web.controller;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Map;
 
-import com.kelson.keeku.domain.User;
-/**
- * 
-* @ClassName: UserRepository 
-* @Description: 用户信息Dao
-* @author Kelson 
-* @date 2013-1-27 上午1:39:34 
-* @version 1.0
- */
-@Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.springframework.ui.Model;
+
+public class BaseController {
 	
-	public User findByUserName(String userName);
+	public void putUserInfo(Map<String,Object> model) {
+		Subject s = SecurityUtils.getSubject();
+		Object userName = s.getPrincipal();
+		if(userName != null) {
+			model.put("username", userName);
+		}
+	}
+	public void putUserInfo(Model model) {
+		Subject s = SecurityUtils.getSubject();
+		Object userName = s.getPrincipal();
+		if(userName != null) {
+			model.addAttribute("username", userName);
+		}
+	}
+	
 
 }

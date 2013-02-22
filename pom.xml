@@ -52,6 +52,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
@@ -65,11 +70,11 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-asm</artifactId>
-			<version>3.1.3.RELEASE</version>
-		</dependency>
+			<version>3.1.4.RELEASE</version>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
@@ -81,14 +86,8 @@
 			<version>${hibernate.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		
-		<!-- web相关 -->
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
-		
+
+
 		<!-- Spring test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -180,13 +179,38 @@
 			<scope>system</scope>
 			<systemPath>E:\MySql\Connector J 5.1.20.0\mysql-connector-java-5.1.20-bin.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>1</version>
+			<scope>system</scope>
+			<systemPath>E:\tomcat\apache-tomcat-7.0.21\lib\servlet-api.jar</systemPath>
+		</dependency>
+		
+		<!-- Shiro -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-aspectj</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		
+		
 
-
-<!-- 		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.1.1</version>
-		</dependency> -->
 	</dependencies>
 	<build>
 		<plugins>

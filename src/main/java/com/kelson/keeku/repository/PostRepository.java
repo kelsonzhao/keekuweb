@@ -1,5 +1,5 @@
 /*
- * Copyright 2010~2013 the original author or authors.
+ * Copyright 2010~2013 keeku.co.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,18 +18,9 @@ package com.kelson.keeku.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.kelson.keeku.domain.User;
-/**
- * 
-* @ClassName: UserRepository 
-* @Description: 用户信息Dao
-* @author Kelson 
-* @date 2013-1-27 上午1:39:34 
-* @version 1.0
- */
+import com.kelson.keeku.domain.Post;
+
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-	
-	public User findByUserName(String userName);
+public interface PostRepository extends JpaRepository<Post, Integer> {
 
 }

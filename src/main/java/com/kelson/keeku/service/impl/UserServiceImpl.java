@@ -13,23 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.kelson.keeku.repository;
+package com.kelson.keeku.service.impl;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.kelson.keeku.domain.User;
-/**
- * 
-* @ClassName: UserRepository 
-* @Description: 用户信息Dao
-* @author Kelson 
-* @date 2013-1-27 上午1:39:34 
-* @version 1.0
- */
-@Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+import com.kelson.keeku.repository.UserRepository;
+import com.kelson.keeku.service.UserService;
+
+@Service
+public class UserServiceImpl implements UserService {
 	
-	public User findByUserName(String userName);
+	@Autowired
+	UserRepository ur;
+
+	@Override
+	public User addUser(User user) {
+		return ur.save(user);
+	}
+
+	@Override
+	public User getUser(String userName) {
+		return ur.findByUserName(userName);
+	}
 
 }

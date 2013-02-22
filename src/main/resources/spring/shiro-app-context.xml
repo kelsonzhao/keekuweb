@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
+		<context:annotation-config />
+	 <bean id="myRealm" class="com.kelson.keeku.security.MyRealm"  depends-on="userRepository"> </bean>
+	 <bean id="defaultSecurityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">
+	 	<property name="realm" ref="myRealm" />
+	 </bean>
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- Single realm app. If you have multiple realms, use the 'realms' property instead. -->
+		<property name="realm" ref="myRealm" />
+	</bean>
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean" >
+		<property name="securityManager" ref="securityManager" />
+		<!-- override these for application-specific URLs if you like:  -->
+		<property name="loginUrl" value="/login"/> 
+		<property name="successUrl" value="/"/> 
+		<property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+		<!-- The 'filters' property is not necessary since any declared javax.servlet.Filter bean -->
+		<!-- defined will be automatically acquired and available via its beanName in chain -->
+		<!-- definitions, but you can perform instance overrides or name aliases here if you like: -->
+		<property name="filters"> 
+			<util:map> <entry key="authc" value-ref="myFormAuthenticationFilter"/> 
+			</util:map> 
+		</property> 
+		<property name="filterChainDefinitions">
+			<value> # some example chain definitions: 
+				/admin/** = authc, roles[admin] 
+				/docs/** = authc, perms[document:read] 
+				/login/** = authc
+				#/** = authc 
+				# more URL-to-FilterChain definitions here
+			</value>
+		</property>
+	</bean>
+	<bean id="myFormAuthenticationFilter"   class="com.kelson.keeku.security.MyFormAuthenticationFilter"/>
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<!-- For simplest integration, so that all SecurityUtils.* methods work in all cases, -->
+	<!-- make the securityManager bean a static singleton. DO NOT do this in web -->
+	<!-- applications - see the 'Web Applications' section below instead. -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager" />
+		<property name="arguments" ref="securityManager" />
+	</bean>
+	<!-- Enable Shiro Annotations for Spring-configured beans.  Only run after -->
+	<!-- the lifecycleBeanProcessor has run: -->
+ 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor" />
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	
+</beans>

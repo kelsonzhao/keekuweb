@@ -26,6 +26,8 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer userId;
+	
+	private String password;
 
 	private String userName;
 
@@ -285,4 +287,13 @@ public class User implements Serializable {
 		this.newMessageCount = newMessageCount;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	
 }
