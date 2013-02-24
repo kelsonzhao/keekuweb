@@ -15,12 +15,25 @@
  */
 package com.kelson.keeku.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.kelson.keeku.domain.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
+
+	@Query(value = "select p  from Post p where threadId = :threadId")
+	Page<Post> findAll(@Param("threadId") Integer threadId, Pageable pageable);
+
+	@Query(value="select max(floor) + 1 from Post p where threadId = ?1")
+	int findMaxFloor(Integer floor);
+	/*@Modifying
+	@Query(value = "INSERT INTO t_post (postId, forumId, threadId, subject, authorUserName, createdDate, lastUpdatedBy, lastUpdatedDate, message,authorIp, floor) VALUES (3, 2, 1, 'xxxxxx', 'KelsonZhao', '2013-02-23 00:15:12', 'KelsonZhao', '2013-02-23 00:15:12', '<p>abc</p>','123.11',2)" ,nativeQuery=true)
+	public int addPost();*/
 
 }

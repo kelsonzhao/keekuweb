@@ -18,10 +18,15 @@ package com.kelson.keeku.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.kelson.keeku.domain.Post;
 import com.kelson.keeku.domain.Thread;
 
 public interface ForumService {
-	
-	public Page<Thread>  listThreads(Pageable pageable) ;
+
+	public Page<Thread> listThreads(Pageable pageable);
+
+	public Page<Post> listPosts(Pageable pageable, Integer threadId);
+
+	public Post addPost(Post p);
 
 }

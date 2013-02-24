@@ -25,6 +25,11 @@
             <property name="hibernate.format_sql" value="true" />
             <property name="javax.persistence.validation.mode" value="none"/>
         </properties> -->
+        <!-- <properties>
+        	<property name="hibernate.connection.autocommit" value="true" />  
+        </properties> -->
+        
     </persistence-unit>
+    
             
 </persistence>

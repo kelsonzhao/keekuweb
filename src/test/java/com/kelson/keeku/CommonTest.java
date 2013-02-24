@@ -4,9 +4,16 @@ import java.security.Key;
 
 import org.apache.shiro.crypto.AesCipherService;
 import org.apache.shiro.util.ByteSource;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 public class CommonTest {
+	
+	@Test
+	public void testDate() {
+		DateTime d = new DateTime();
+		System.out.println("***************:" + d.toString("yyyy-MM-dd HH:mm:ss"));
+	}
 
 	@Test
 	public void test1() {

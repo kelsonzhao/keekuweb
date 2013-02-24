@@ -261,34 +261,34 @@ a:visited {
 	border:0px solid; 
 	color: #0f2350;
 }
-.postList{
+.threadList{
 	/* width: 100%;*/
 	padding: 0px 0px; 
 }
-.postList ul li.post{margin:0 0 5px 0;padding:0 0 10px 0;border-bottom:1px dashed #ccc;}
-.postList ul li.post a.user{float : left;width: 50px;}
-.postList ul li.post a.user img{width:32px; height:32px;}
-.postList ul li.post .postBody{float: left;width: 500px;}
-.postList ul li.post h2 {font-size:10.5pt;color:#666;}
-.postList ul li.post .Tags {font-size:8pt;margin:10px 0 0 0;-webkit-text-size-adjust:none;}
-.postList ul li.post .Date {font-size:8pt;color:#888;margin:5px 0 0 0;-webkit-text-size-adjust:none;}
-.postList ul li.post .stat {float:right;width:100px;text-align:right;}
-.postList ul li.post .stat ul li {
+.threadList ul li.thread{margin:0 0 2px 0;padding:0 0 2px 0;border-bottom:1px dashed #ccc;}
+.threadList ul li.thread a.user{float : left;width: 50px;}
+.threadList ul li.thread a.user img{width:32px; height:32px;}
+.threadList ul li.thread .threadBody{float: left;width: 500px;}
+.threadList ul li.thread h2 {font-size:10.5pt;color:#666;}
+.threadList ul li.thread .Tags {font-size:8pt;margin:10px 0 0 0;-webkit-text-size-adjust:none;}
+.threadList ul li.thread .Date {font-size:8pt;color:#888;margin:5px 0 0 0;-webkit-text-size-adjust:none;}
+.threadList ul li.thread .stat {float:right;width:100px;text-align:right;}
+.threadList ul li.thread .stat ul li {
 	float:left;
-	font-size:9pt;
+	font-size:8pt;
 	text-align:center;
 	margin-left:3px;
 	width:42px;
-	padding:0 0 3px 0;
+	padding:0 0 1px 0;
 
 }
-.postList ul li.post .stat ul li.reply{background:#5338c8;color:#fff;}
-.postList ul li.post .stat ul li.view{background:#5338c8;color:#fff;}
-.postList ul li.post .stat ul li em{
+.threadList ul li.thread .stat ul li.reply{background:#5338c8;color:#fff;}
+.threadList ul li.thread .stat ul li.view{background:#5338c8;color:#fff;}
+.threadList ul li.thread .stat ul li em{
 	display:block;
 	padding:3px 0;
 	font-style:normal;
 	font-family:Verdana ;
 	font-weight:bold;
-	font-size:12pt;
+	/* font-size:12pt; */
 	}

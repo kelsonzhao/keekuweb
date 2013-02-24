@@ -14,5 +14,10 @@
 		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
 		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
 	</definition>
+	<definition name="postsView" extends="mainLayoutTemplate">
+		<put-attribute name="title" value="Keeku" />
+		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/jsp/forum/postsView.jsp" />
+	</definition>
 
 </tiles-definitions>

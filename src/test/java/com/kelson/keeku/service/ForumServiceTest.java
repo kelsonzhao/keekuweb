@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import com.kelson.keeku.BaseTest;
@@ -38,6 +37,9 @@ public class ForumServiceTest extends BaseTest {
 	
 	@Autowired
 	UserService us;
+	
+	@Autowired
+	ForumService fs;
 	
 	@Autowired
 	ForumRepository fr;
@@ -127,6 +129,12 @@ public class ForumServiceTest extends BaseTest {
 		pr.save(p);
 	}
 	@Test
+	public void testPostPage(){
+		PageRequest pr2  = new PageRequest(0, 10);
+		Page<Post> r = pr.findAll( 1,pr2);
+		logger.info("*****************ret:" + r.getNumberOfElements());
+	}
+	@Test
 	public void testPage(){
 		PageRequest pr  = new PageRequest(0, 10);
 		Page<Thread> result = tr.findAll(pr);
@@ -137,6 +145,26 @@ public class ForumServiceTest extends BaseTest {
 		logger.info("***************user:" + subject.getPrincipal());
 		User user = us.getUser((String)subject.getPrincipal());
 		logger.info("**************user:"+user.getEmail());
+	}
+	@Test
+	@Rollback(value=false)
+	public void testAddPost(){
+		//logger.info("**************floor:"+pr.findMaxFloor(1));
+		Integer forumId =2;
+		Integer threadId =1; 
+		//String subjetStr = "test";
+		Post p = new Post();
+		p.setForumId(forumId);
+		p.setThreadId(threadId);
+		//p.setSubject(subjetStr);
+		p.setAuthorUserName((String)subject.getPrincipal());
+		p.setCreatedDate(new Date());
+		p.setLastUpdatedDate(new Date());
+		p.setLastUpdatedBy((String)subject.getPrincipal());
+		p.setAuthorIp("101.202.3.5");
+		//p.setFloor(1);
+		p.setMessage("<p>abc</p>");
+		fs.addPost(p);
 	}
 
 }

@@ -39,10 +39,10 @@
 	</aop:config>
 	 <tx:advice id="txAdvice" transaction-manager="transactionManager">  
 	  <tx:attributes>  
-	   <tx:method name="add*" propagation="REQUIRED" />  
+	   <tx:method name="add*" propagation="REQUIRED"  read-only="false" />
 	   <tx:method name="edit*" propagation="REQUIRED" />  
 	   <tx:method name="delete*" propagation="REQUIRED" />  
-	   <tx:method name="*" read-only="true"/>  
+	   <tx:method name="*" read-only="true"/>
 	  </tx:attributes>  
 	 </tx:advice>  
 	<bean id="persistenceProvider" class="org.hibernate.ejb.HibernatePersistence" />

@@ -15,11 +15,14 @@
  */
 package com.kelson.keeku.service.impl;
 
+import javax.persistence.EntityManagerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.kelson.keeku.domain.Post;
 import com.kelson.keeku.domain.Thread;
 import com.kelson.keeku.repository.ForumRepository;
 import com.kelson.keeku.repository.PostRepository;
@@ -37,10 +40,33 @@ public class ForumServiceImpl implements ForumService{
 	
 	@Autowired
 	PostRepository pr;
+	
+	@Autowired
+	EntityManagerFactory emf;
 
 	@Override
 	public Page<Thread>  listThreads(Pageable pageable) {
 		return tr.findAll(pageable);
 	}
+
+	@Override
+	public Page<Post> listPosts(Pageable pageable, Integer threadId) {
+		return pr.findAll(threadId,pageable);
+	}
+
+	@Override
+	public Post addPost(Post post) {
+		post.setFloor(pr.findMaxFloor(post.getThreadId()));
+		pr.saveAndFlush(post);
+		/*EntityManager em = emf.createEntityManager();
+		EntityTransaction t = em.getTransaction();
+		t.begin();
+		Query a = em.createNativeQuery("INSERT INTO t_post (postId, forumId, threadId, subject, authorUserName, createdDate, lastUpdatedBy, lastUpdatedDate, message,authorIp, floor) VALUES (3, 2, 1, 'xxxxxx', 'KelsonZhao', '2013-02-23 00:15:12', 'KelsonZhao', '2013-02-23 00:15:12', '<p>abc</p>','123.11',2)");
+		a.executeUpdate();
+		//t.commit();
+		em.close();*/
+		return post;
+	}
+
 
 }
