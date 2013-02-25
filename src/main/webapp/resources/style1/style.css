@@ -6,6 +6,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 	font: 10pt/1.5 微软雅黑, Verdana, sans-serif, 宋体;
 	vertical-align: baseline;
 	background: transparent;
+	color: #535353;
 }
 
 ul {
@@ -77,7 +78,7 @@ a:visited {
 
 #left-sidebar {
 	margin: 0 0;
-	width: 250px;
+	width: 200px;
 	/* background-color: gray; */
 	float: left;
 	overflow: hidden;
@@ -110,8 +111,8 @@ a:visited {
 	width: inherit;
 }
 #content {
-	margin: 0 253px !important;
-	margin: 0 250px;
+	margin: 0 253px 0 200px!important;
+	margin: 0 250 0 200px;
 	overflow: hidden;
 	padding: 10px 10px;
 	/* background-color: yellow; */
@@ -133,19 +134,19 @@ a:visited {
 }
 
 .left-sidebar-logo {
-	left: 10px;
+	left: 5px;
 	top: 12px;
-	background-position: -10px -5px;
-	width: 220px;
+	background-position: -20px -5px;
+	width: 200px;
 	height: 60px;
 }
 
 .tile_item{
 	margin: 3px 0 0 0;
-	padding: 18px 10px 18px 10px;
+	padding: 18px 10px 18px 10px; 
 	word-wrap: break-word;
 	overflow: hidden;
-	width: inherit;
+	width: auto;
 	text-align: left;
 }
 .tile_item_1 {
@@ -292,3 +293,32 @@ a:visited {
 	font-weight:bold;
 	/* font-size:12pt; */
 	}
+.topic_detail {
+	display: inline-block;
+	margin: 0 auto;
+}
+.topic_main{
+	/* border-top: solid 1px black; */
+	border-bottom: solid 1px black;
+	margin-top: 20px;
+}
+.topic_reply{
+	/* border-top: solid 1px black; */
+	border-bottom: solid 1px black;
+	margin-top: 20px;
+}
+.floor_left {
+	width: 180px;
+	background-color:  #bbc8e6; 
+	float: left; 
+	overflow: hidden;
+	text-align: center;
+}
+
+.floor_right {
+	color: #333;
+	width: 544px;
+	/* background-color: blue; */
+	float: right;
+	overflow: hidden;
+}
