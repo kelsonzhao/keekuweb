@@ -19,8 +19,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -38,12 +40,17 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
 		try {
 			Subject subject = getSubject(request, response);
 			subject.login(token);
+   		 	Session session = subject.getSession();
+   		 	Integer userId = (Integer)session.getAttribute("userId");
 			if(StringUtils.isBlank(WebUtils.getCleanParam(request, "NeedSuccessRedirect"))){
 				return true;
 			}else {
 				return onLoginSuccess(token, subject, request, response);
 			}
 		} catch (AuthenticationException e) {
+			if(SecurityUtils.getSubject().getSession(false) != null){
+				SecurityUtils.getSubject().getSession(false).removeAttribute("userId");
+			}
 			return onLoginFailure(token, e, request, response);
 		}
 	}

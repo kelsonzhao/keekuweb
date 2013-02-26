@@ -16,6 +16,7 @@
 package com.kelson.keeku.security;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -24,7 +25,9 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kelson.keeku.domain.User;
@@ -50,10 +53,12 @@ public class MyRealm extends AuthorizingRealm {
          if(!StringUtils.isBlank(username)){
         	 User user = us.getUser(username);
         	 if(user != null) {
+        		 Subject subject = SecurityUtils.getSubject();
+        		 Session session = subject.getSession(true);
+        		 session.setAttribute("userId", user.getUserId());
         		 return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(),getName());
         	 }
          }
-		 
 		return null;
 	}
 
