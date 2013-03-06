@@ -2,31 +2,37 @@ package com.kelson.keeku.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * 
- * @ClassName: User 
- * @Description: 用户领域对象 
- * @author Kelson 
- * @date 2013-1-27 上午1:21:35 
+ * @ClassName: User
+ * @Description: 用户领域对象
+ * @author Kelson
+ * @date 2013-1-27 上午1:21:35
  * @version 1.0
  */
 @Entity
-@Table(name="t_user")
+@Table(name = "t_user")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 7189752172263221627L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer userId;
-	
+
 	private String password;
 
 	private String userName;
@@ -46,6 +52,8 @@ public class User implements Serializable {
 	private Date lastActivity;
 
 	private Integer postCount;
+
+	private Integer replyCount;
 
 	private Integer credit;
 
@@ -85,6 +93,14 @@ public class User implements Serializable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public Integer getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(Integer replyCount) {
+		this.replyCount = replyCount;
 	}
 
 	public String getUserName() {
@@ -295,5 +311,4 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	
 }

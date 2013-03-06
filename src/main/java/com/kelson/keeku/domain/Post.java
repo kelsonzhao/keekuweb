@@ -22,37 +22,47 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
-@Table(name="t_post")
+@Table(name = "t_post")
 public class Post implements Serializable {
 
 	private static final long serialVersionUID = -5100494243098887952L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer postId;
-	
+
 	private Integer forumId;
-	
+
 	private Integer threadId;
-	
+
 	private String subject;
-	
-	private String authorUserName;
-	
+
+	private Integer authorUserId;
+
 	private Date createdDate;
-	
+
 	private Date lastUpdatedDate;
-	
-	private String lastUpdatedBy;
-	
+
+	private Integer lastUpdatedByUserId;
+
 	private String authorIp;
-	
+
 	private String message;
-	
+
 	private Integer floor;
+
+	@ManyToOne(targetEntity = User1.class)  // default  fetch type for OneToOne is eager
+    @JoinColumn(name="authorUserId",insertable=false,updatable=false)
+	@Fetch(FetchMode.JOIN)
+	private User1 author;
 
 	public Integer getPostId() {
 		return postId;
@@ -60,6 +70,14 @@ public class Post implements Serializable {
 
 	public void setPostId(Integer postId) {
 		this.postId = postId;
+	}
+
+	public User1 getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User1 author) {
+		this.author = author;
 	}
 
 	public Integer getForumId() {
@@ -86,21 +104,20 @@ public class Post implements Serializable {
 		this.subject = subject;
 	}
 
-
-	public String getAuthorUserName() {
-		return authorUserName;
+	public Integer getAuthorUserId() {
+		return authorUserId;
 	}
 
-	public void setAuthorUserName(String authorUserName) {
-		this.authorUserName = authorUserName;
+	public void setAuthorUserId(Integer authorUserId) {
+		this.authorUserId = authorUserId;
 	}
 
-	public String getLastUpdatedBy() {
-		return lastUpdatedBy;
+	public Integer getLastUpdatedByUserId() {
+		return lastUpdatedByUserId;
 	}
 
-	public void setLastUpdatedBy(String lastUpdatedBy) {
-		this.lastUpdatedBy = lastUpdatedBy;
+	public void setLastUpdatedByUserId(Integer lastUpdatedByUserId) {
+		this.lastUpdatedByUserId = lastUpdatedByUserId;
 	}
 
 	public Date getCreatedDate() {
@@ -118,7 +135,6 @@ public class Post implements Serializable {
 	public void setLastUpdatedDate(Date lastUpdatedDate) {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
-
 
 	public String getAuthorIp() {
 		return authorIp;
@@ -143,7 +159,5 @@ public class Post implements Serializable {
 	public void setFloor(Integer floor) {
 		this.floor = floor;
 	}
-	
-	
 
 }

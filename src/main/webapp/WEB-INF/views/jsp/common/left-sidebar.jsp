@@ -7,7 +7,7 @@
 	新闻
 </div>
 <div class="tile_item tile_item_1">
-	论坛
+	<a href='<c:url value="/forum/viewForumsList"/>'>论坛</a>
 </div>
 <div class="tile_item tile_item_1">
 	个人工具

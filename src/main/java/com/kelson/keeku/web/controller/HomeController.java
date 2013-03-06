@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController extends BaseController{
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -42,16 +40,22 @@ public class HomeController extends BaseController{
 		Map<String,Object> ret  = new HashMap<String,Object>();
 		//String msg = request.getParameter("shiroLoginFailure");
 		String msg = (String)request.getAttribute("shiroLoginFailure");
+		String backUrl = (String)request.getAttribute("backUrl");
 		putUserInfo(ret);
-		
 		if(!StringUtils.isBlank(msg)){
 			ret.put("message", "Wrong username or password!");
 			ret.put("success", 0);
 		}else {//login successful
 			ret.put("success", 1);
+			ret.put("needRedirect", WebUtils.getCleanParam(request, "needRedirect"));
+			ret.put("backUrl", backUrl);
 		}
-	
 		return ret;
+	}
+	@RequestMapping(value = "/login/please")
+	public ModelAndView toLoginView(Locale locale, Model model){
+		
+		return new ModelAndView("loginView",model.asMap());
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)

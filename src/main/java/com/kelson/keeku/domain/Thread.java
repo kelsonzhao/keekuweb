@@ -18,11 +18,13 @@ package com.kelson.keeku.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -51,13 +53,13 @@ public class Thread implements Serializable {
 	
 	private String subject;
 	
-	private String authorUserName;
+	private Integer authorUserId;
 	
 	private Date createdDate;
 	
 	private Date lastUpdatedDate;
 	
-	private String lastUpdatedBy;
+	private Integer lastUpdatedByUserId;
 	
 	private Integer views;
 	
@@ -70,6 +72,21 @@ public class Thread implements Serializable {
 	private Integer attachment;
 	
 	private Integer state;
+	
+	/**
+	 * 与主题对应的一楼
+	 */
+	@Transient
+	private Post post;
+
+	
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
 
 	public Integer getThreadId() {
 		return threadId;
@@ -97,6 +114,23 @@ public class Thread implements Serializable {
 
 
 
+	public Integer getAuthorUserId() {
+		return authorUserId;
+	}
+
+	public void setAuthorUserId(Integer authorUserId) {
+		this.authorUserId = authorUserId;
+	}
+
+
+	public Integer getLastUpdatedByUserId() {
+		return lastUpdatedByUserId;
+	}
+
+	public void setLastUpdatedByUserId(Integer lastUpdatedByUserId) {
+		this.lastUpdatedByUserId = lastUpdatedByUserId;
+	}
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -112,24 +146,6 @@ public class Thread implements Serializable {
 	public void setLastUpdatedDate(Date lastUpdatedDate) {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
-
-
-	public String getAuthorUserName() {
-		return authorUserName;
-	}
-
-	public void setAuthorUserName(String authorUserName) {
-		this.authorUserName = authorUserName;
-	}
-
-	public String getLastUpdatedBy() {
-		return lastUpdatedBy;
-	}
-
-	public void setLastUpdatedBy(String lastUpdatedBy) {
-		this.lastUpdatedBy = lastUpdatedBy;
-	}
-
 	public Integer getViews() {
 		return views;
 	}

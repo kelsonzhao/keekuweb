@@ -41,9 +41,7 @@
    <div class="tile_item tile_item_2" >
 	 <div style="padding: 0px 10px;">
 		<ul class="button-list">
-			  <li>
-				<a href="#"   class="button white" title="发贴">发贴</a>
-		      </li>
+			  <tiles:insertAttribute name="operations" />
 		</ul>
 	</div>
    </div>
@@ -74,7 +72,8 @@
 				type : "POST",
 				data : {
 					username : $("#username").val() ,
-					password : $("#password").val()
+					password : $("#password").val(),
+					ajaxLogin : "1"
 				},
 				dataType : "json",
 				success : function(data) {

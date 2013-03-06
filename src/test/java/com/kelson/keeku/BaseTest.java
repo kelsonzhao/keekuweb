@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
+import com.kelson.keeku.service.UserService;
+
 @ContextConfiguration(locations = {"classpath:spring/app-context.xml","classpath:spring/shiro-app-context.xml"})
 public class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
 

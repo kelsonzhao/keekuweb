@@ -22,4 +22,22 @@ Date.prototype.format = function(format) {
 function toDate(longDate){
 	var d =new Date(Number(longDate));
 	return d.format('yyyy-MM-dd hh:mm:ss');
-}
+};
+
+var Keeku = window.Keeku || {};
+Keeku.Constant = Keeku.Constant || {};
+Keeku.Constant.host = (function(){
+	var strFullPath=window.document.location.href;
+	var strPath=window.document.location.pathname;
+	var pos=strFullPath.indexOf(strPath);
+	var prePath=strFullPath.substring(0,pos);
+	return(prePath);
+})();
+Keeku.Constant.root = (function(){
+	var strFullPath=window.document.location.href;
+	var strPath=window.document.location.pathname;
+	var pos=strFullPath.indexOf(strPath);
+	var prePath=strFullPath.substring(0,pos);
+	var postPath=strPath.substring(0,strPath.substr(1).indexOf('/')+1);
+	return(prePath+postPath);
+})();

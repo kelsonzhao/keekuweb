@@ -17,21 +17,26 @@ package com.kelson.keeku.service;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.util.Assert;
 
 import com.kelson.keeku.BaseTest;
 import com.kelson.keeku.domain.Forum;
 import com.kelson.keeku.domain.Post;
 import com.kelson.keeku.domain.Thread;
+import com.kelson.keeku.domain.ThreadStateEnum;
 import com.kelson.keeku.domain.User;
 import com.kelson.keeku.repository.ForumRepository;
 import com.kelson.keeku.repository.PostRepository;
 import com.kelson.keeku.repository.ThreadRepository;
+import com.kelson.utils.BooleanEnum;
 
 public class ForumServiceTest extends BaseTest {
 	
@@ -79,10 +84,12 @@ public class ForumServiceTest extends BaseTest {
 		Thread t = new Thread() ;
 		t.setForumId(forumId);
 		t.setSubject(subjectStr);
-		t.setAuthorUserName((String)subject.getPrincipal());
+		//t.setAuthorUserName((String)subject.getPrincipal());
+		t.setAuthorUserId((Integer)subject.getSession().getAttribute("userId"));
 		t.setCreatedDate(new Date());
 		t.setLastUpdatedDate(new Date());
-		t.setLastUpdatedBy((String)subject.getPrincipal());
+		//t.setLastUpdatedBy((String)subject.getPrincipal());
+		t.setLastUpdatedByUserId((Integer)subject.getSession().getAttribute("userId"));
 		t.setViews(1);
 		t.setReplies(1);
 		t.setDisplayOrder(1);
@@ -99,10 +106,12 @@ public class ForumServiceTest extends BaseTest {
 		p.setForumId(forumId);
 		p.setThreadId(threadId);
 		p.setSubject(subjet);
-		p.setAuthorUserName((String)subject.getPrincipal());
+		//p.setAuthorUserName((String)subject.getPrincipal());
+		p.setAuthorUserId((Integer)subject.getSession().getAttribute("userId"));
 		p.setCreatedDate(new Date());
 		p.setLastUpdatedDate(new Date());
-		p.setLastUpdatedBy((String)subject.getPrincipal());
+		//p.setLastUpdatedBy((String)subject.getPrincipal());
+		p.setLastUpdatedByUserId((Integer)subject.getSession().getAttribute("userId"));
 		p.setAuthorIp("101.202.3.5");
 		p.setFloor(1);
 		p.setMessage("<p>abc</p>");
@@ -119,10 +128,12 @@ public class ForumServiceTest extends BaseTest {
 		p.setForumId(forumId);
 		p.setThreadId(threadId);
 		p.setSubject(subjetStr);
-		p.setAuthorUserName((String)subject.getPrincipal());
+		//p.setAuthorUserName((String)subject.getPrincipal());
+		p.setAuthorUserId((Integer)subject.getSession().getAttribute("userId"));
 		p.setCreatedDate(new Date());
 		p.setLastUpdatedDate(new Date());
-		p.setLastUpdatedBy((String)subject.getPrincipal());
+		//p.setLastUpdatedBy((String)subject.getPrincipal());
+		p.setLastUpdatedByUserId((Integer)subject.getSession().getAttribute("userId"));
 		p.setAuthorIp("101.202.3.5");
 		p.setFloor(1);
 		p.setMessage("<p>abc</p>");
@@ -133,12 +144,20 @@ public class ForumServiceTest extends BaseTest {
 		PageRequest pr2  = new PageRequest(0, 10);
 		Page<Post> r = pr.findAll( 1,pr2);
 		logger.info("*****************ret:" + r.getNumberOfElements());
+		Assert.notNull(r.getContent().get(0).getAuthor());
 	}
 	@Test
 	public void testPage(){
 		PageRequest pr  = new PageRequest(0, 10);
 		Page<Thread> result = tr.findAll(pr);
 		logger.info("*****************ret:" + result.getNumberOfElements());
+	}
+	@Test
+	public void testThreadPage(){
+		PageRequest pr  = new PageRequest(0, 10);
+		Page<Thread> result = tr.findByForumId(2, pr);
+		logger.info("*****************ret:" + result.getNumberOfElements());
+		Assert.isTrue(result.getNumberOfElements()>0);
 	}
 	@Test
 	public void test1() {
@@ -157,14 +176,49 @@ public class ForumServiceTest extends BaseTest {
 		p.setForumId(forumId);
 		p.setThreadId(threadId);
 		//p.setSubject(subjetStr);
-		p.setAuthorUserName((String)subject.getPrincipal());
+		//p.setAuthorUserName((String)subject.getPrincipal());
+		p.setAuthorUserId((Integer)subject.getSession().getAttribute("userId"));
 		p.setCreatedDate(new Date());
 		p.setLastUpdatedDate(new Date());
-		p.setLastUpdatedBy((String)subject.getPrincipal());
+		//p.setLastUpdatedBy((String)subject.getPrincipal());
+		p.setLastUpdatedByUserId((Integer)subject.getSession().getAttribute("userId"));
 		p.setAuthorIp("101.202.3.5");
 		//p.setFloor(1);
-		p.setMessage("<p>abc</p>");
+		p.setMessage("<p>abdddddc</p>");
 		fs.addPost(p);
 	}
+	@Test
+	@Rollback(value=true)
+	public void testAddNewThread(){
+		fs.addThread(buildNewThread(2,"junit test 1","<p>ddq</p>"));
+	}
+	 public Thread buildNewThread(Integer forumId,String title,String content){
+	    	//Thread
+	    	Thread t = new Thread();
+	    	t.setForumId(forumId);
+	    	t.setSubject(title);
+	    	t.setCreatedDate(new Date());
+	    	t.setLastUpdatedDate(new Date());
+	    	t.setAuthorUserId(1);
+	    	t.setLastUpdatedByUserId(1);
+	    	t.setState(ThreadStateEnum.NORMAL.ordinal());
+	    	t.setDigest(BooleanEnum.FALSE.ordinal());
+	    	t.setViews(0);
+	    	t.setReplies(0);
+	    	//Post
+	    	Post p = new Post();
+	    	p.setForumId(forumId);
+	    	p.setSubject(title);
+	    	p.setCreatedDate(new Date());
+	    	p.setLastUpdatedDate(new Date());
+	    	p.setAuthorUserId(1);
+	    	p.setAuthorIp("102.3332.33.22");
+	    	p.setLastUpdatedByUserId(1);
+	    	p.setMessage(content);
+	    	p.setFloor(0);
+	    	
+	    	t.setPost(p);
+	    	return t;
+	    }
 
 }

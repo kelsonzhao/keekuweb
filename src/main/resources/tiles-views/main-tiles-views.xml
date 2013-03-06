@@ -6,18 +6,47 @@
 		<!-- <put-attribute name="content"></put-attribute> 具体的页面内容-->
 		<!-- <put-attribute name="resource"></put-attribute> 具体页面引入的资源-->
 		<put-attribute name="left-sidebar" value="/WEB-INF/views/jsp/common/left-sidebar.jsp" />
-		<put-attribute name="right-sidebar" value="/WEB-INF/views/jsp/common/right-sidebar.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/jsp/common/footer.jsp"/>
 	</definition>
+	<definition name="rightSidebarTemplate" template="/WEB-INF/views/jsp/common/right-sidebar.jsp" />
+	
+	<definition name="rightSidebar4FourmView" extends="rightSidebarTemplate"> 
+		<put-attribute name="operations" value="/WEB-INF/views/jsp/rightSidebar/rightSidebar4Forum.jsp" />
+	</definition>	
+	<definition name="rightSidebar4NewThreadView" extends="rightSidebarTemplate"> 
+		<put-attribute name="operations" value="/WEB-INF/views/jsp/rightSidebar/rightSidebar4NewThread.jsp" />
+	</definition>	
 	<definition name="home" extends="mainLayoutTemplate">
 		<put-attribute name="title" value="Keeku" />
 		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
 		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
+		<put-attribute name="right-sidebar"  value="rightSidebar4FourmView"/>
 	</definition>
-	<definition name="postsView" extends="mainLayoutTemplate">
+	<definition name="forumsListView" extends="mainLayoutTemplate">
 		<put-attribute name="title" value="Keeku" />
 		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
-		<put-attribute name="content" value="/WEB-INF/views/jsp/forum/postsView.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/jsp/forum/forumsListView.jsp" />
+		<put-attribute name="right-sidebar"  value="rightSidebar4FourmView"/>
 	</definition>
+	<definition name="forumThreadsListView" extends="mainLayoutTemplate">
+		<put-attribute name="title" value="Keeku" />
+		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/jsp/forum/forumThreadsListView.jsp" />
+		<put-attribute name="right-sidebar"  value="rightSidebar4FourmView"/>
+	</definition>
+
+	<definition name="threadPostsView" extends="mainLayoutTemplate">
+		<put-attribute name="title" value="Keeku" />
+		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/jsp/forum/threadPostsView.jsp" />
+		<put-attribute name="right-sidebar"  value="rightSidebar4FourmView"/>
+	</definition>
+	<definition name="newThreadView" extends="mainLayoutTemplate">
+		<put-attribute name="title" value="Keeku" />
+		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/jsp/forum/newThread.jsp" />
+		<put-attribute name="right-sidebar"  value="rightSidebar4NewThreadView"/>
+	</definition>
+	<definition name="loginView" template="/WEB-INF/views/jsp/common/login.jsp" />
 
 </tiles-definitions>

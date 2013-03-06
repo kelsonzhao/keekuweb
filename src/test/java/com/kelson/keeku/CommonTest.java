@@ -3,11 +3,19 @@ package com.kelson.keeku;
 import java.security.Key;
 
 import org.apache.shiro.crypto.AesCipherService;
+import org.apache.shiro.util.AntPathMatcher;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.util.PatternMatcher;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
 public class CommonTest {
+	
+	@Test
+	public void testPatternMatcher() {
+		PatternMatcher pm = new AntPathMatcher();
+		System.out.println("ret:" + pm.matches("/login/**", "/login/please"));
+	}
 	
 	@Test
 	public void testDate() {

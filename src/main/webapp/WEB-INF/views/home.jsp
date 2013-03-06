@@ -23,7 +23,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	var threadListUI = Tempo.prepare('threadListUl');
-	$.getJSON('<c:url value="/forum/thread/list"/>',function(data){
+	$.getJSON('<c:url value="/forum/2/thread/list"/>',function(data){
 		if(data == null || data.data == null || data.data.content == null ||data.data.content < 1) {
 			return ;
 		}

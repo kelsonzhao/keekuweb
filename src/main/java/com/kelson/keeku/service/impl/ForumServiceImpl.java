@@ -15,6 +15,8 @@
  */
 package com.kelson.keeku.service.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.kelson.keeku.domain.Forum;
 import com.kelson.keeku.domain.Post;
 import com.kelson.keeku.domain.Thread;
 import com.kelson.keeku.repository.ForumRepository;
@@ -43,6 +46,22 @@ public class ForumServiceImpl implements ForumService{
 	
 	@Autowired
 	EntityManagerFactory emf;
+	
+	
+
+	@Override
+	public List<Forum> listForums() {
+		return fr.findAll();
+	}
+
+	@Override
+	public Thread addThread(Thread t) {
+		tr.save(t);
+		Post p = t.getPost();
+		p.setThreadId(t.getThreadId());
+		pr.save(p);
+		return t;
+	}
 
 	@Override
 	public Page<Thread>  listThreads(Pageable pageable) {
@@ -66,6 +85,11 @@ public class ForumServiceImpl implements ForumService{
 		//t.commit();
 		em.close();*/
 		return post;
+	}
+
+	@Override
+	public Page<Thread> listThreads(Pageable pageable, Integer forumId) {
+		return tr.findByForumId(forumId, pageable);
 	}
 
 
