@@ -49,5 +49,10 @@ public class BaseController {
 	public String getIp(HttpServletRequest request) {
 		return request.getRemoteHost();
 	}
-
+	public int getDefaultPageNum() {
+		return 0;
+	}
+	public int getDefaultPageSize() {
+		return 10;
+	}
 }

@@ -29,6 +29,14 @@ public interface ForumService {
 	public List<Forum> listForums();
 	
 	public Thread addThread(Thread t) ;
+	
+	public int eidtThread(Thread t);
+	
+	public int eidtThread(Integer threadId,Integer postId,String subject,String message);
+	
+	public int eidtPost(Integer threadId,Integer postId,String message);
+	
+	public Post createPost(Integer threadId, String message,Integer userId,String Ip);
 
 	public Page<Thread> listThreads(Pageable pageable);
 	
@@ -37,5 +45,11 @@ public interface ForumService {
 	public Page<Post> listPosts(Pageable pageable, Integer threadId);
 
 	public Post addPost(Post p);
+	
+	public Post getPost(Integer postId);
+	
+	public Thread getThread(Integer threadId);
+	
+	public Forum getForum(Integer forumId);
 
 }

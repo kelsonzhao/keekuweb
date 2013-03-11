@@ -18,13 +18,17 @@ package com.kelson.keeku.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * 
@@ -50,6 +54,7 @@ public class Thread implements Serializable {
 	 * 所属论坛版块
 	 */
 	private Integer forumId;
+	
 	
 	private String subject;
 	
@@ -78,11 +83,27 @@ public class Thread implements Serializable {
 	 */
 	@Transient
 	private Post post;
+	
+	@ManyToOne(targetEntity = Forum.class)  // default  fetch type for OneToOne is eager
+    @JoinColumn(name="forumId",insertable=false,updatable=false)
+	@Fetch(FetchMode.JOIN)
+	private Forum forum;
 
 	
 	public Post getPost() {
 		return post;
 	}
+
+
+	public Forum getForum() {
+		return forum;
+	}
+
+
+	public void setForum(Forum forum) {
+		this.forum = forum;
+	}
+
 
 	public void setPost(Post post) {
 		this.post = post;

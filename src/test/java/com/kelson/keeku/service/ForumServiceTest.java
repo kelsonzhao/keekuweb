@@ -17,8 +17,6 @@ package com.kelson.keeku.service;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +53,21 @@ public class ForumServiceTest extends BaseTest {
 	@Autowired
 	PostRepository pr;
 	
+	
 	@Before
 	public void init() {
 		setSecurity("kelsonzhao", "123456");
+	}
+	@Test
+	public void findThread(){
+		Thread t = tr.findOne(1);
+		logger.info("f name : " + t.getForum().getName());
+	}
+	
+	@Test
+	@Rollback(false)
+	public void editThread(){
+		fs.eidtThread(1, 1, "KelsonTest#", "tttddd");
 	}
 	
 	@Test

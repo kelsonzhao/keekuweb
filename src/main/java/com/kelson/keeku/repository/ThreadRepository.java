@@ -15,9 +15,13 @@
  */
 package com.kelson.keeku.repository;
 
+import java.util.Date;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.kelson.keeku.domain.Thread;
@@ -26,5 +30,10 @@ import com.kelson.keeku.domain.Thread;
 public interface ThreadRepository extends JpaRepository<Thread, Integer> {
 	
 	Page<Thread> findByForumId(Integer forumId,Pageable pageable);
+	
+	@Modifying
+	@Query(value="update Thread t set t.subject=?2,t.lastUpdatedDate=?3,t.lastUpdatedByUserId=?4  where  t.threadId = ?1")
+	int editThread(Integer threadId,String subject,Date currentTime,Integer operatorId);
+	
 
 }

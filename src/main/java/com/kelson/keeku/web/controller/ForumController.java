@@ -95,13 +95,14 @@ public class ForumController extends BaseController {
 		return ret;
 	}
 
-	@RequestMapping(value = "thread/{threadId}/viewpost/{pageNum}/{pageSize}", method = RequestMethod.GET)
-	public ModelAndView home(@PathVariable("threadId") Integer threadId, @PathVariable(value = "pageNum") Integer pageNum,
-			@PathVariable("pageSize") Integer pageSize, Model model) {
+	@RequestMapping(value = "thread/{threadId}/viewpost", method = RequestMethod.GET)
+	public ModelAndView home(@PathVariable("threadId") Integer threadId, Model model) {
 		putUserInfo(model);
+		Thread t = fs.getThread(threadId);
+		model.addAttribute("forumId", t.getForumId());
 		model.addAttribute("threadId", threadId);
-		model.addAttribute("pageNum", pageNum);
-		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("pageNum", this.getDefaultPageNum());
+		model.addAttribute("pageSize", this.getDefaultPageSize());
 		return new ModelAndView("threadPostsView", model.asMap());
 	}
 

@@ -15,6 +15,7 @@
  */
 package com.kelson.keeku.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.kelson.keeku.domain.Forum;
+import com.kelson.keeku.domain.ForumBuilder;
 import com.kelson.keeku.domain.Post;
 import com.kelson.keeku.domain.Thread;
 import com.kelson.keeku.repository.ForumRepository;
@@ -33,7 +35,7 @@ import com.kelson.keeku.repository.ThreadRepository;
 import com.kelson.keeku.service.ForumService;
 
 @Service
-public class ForumServiceImpl implements ForumService{
+public class ForumServiceImpl extends BaseService implements ForumService{
 	
 	@Autowired
 	ForumRepository fr;
@@ -87,10 +89,52 @@ public class ForumServiceImpl implements ForumService{
 		return post;
 	}
 
+
+	@Override
+	public int eidtThread(Thread t) {
+		
+		return 0;
+	}
+
+	@Override
+	public int eidtThread(Integer threadId, Integer postId, String subject, String message) {
+		tr.editThread(threadId, subject, new Date(), getCurrentUser());
+		return pr.editPost(threadId, postId, subject, message, new Date(), getCurrentUser());
+	}
+
+	@Override
+	public int eidtPost(Integer threadId, Integer postId, String message) {
+		return pr.editPost(threadId, postId, null, message, new Date(), getCurrentUser());
+	}
+
 	@Override
 	public Page<Thread> listThreads(Pageable pageable, Integer forumId) {
 		return tr.findByForumId(forumId, pageable);
 	}
 
+	@Override
+	public Post getPost(Integer postId) {
+		return pr.findOne(postId);
+	}
+
+	@Override
+	public Thread getThread(Integer threadId) {
+		return tr.findOne(threadId);
+	}
+
+	@Override
+	public Forum getForum(Integer forumId) {
+		return fr.findOne(forumId);
+	}
+
+	@Override
+	public Post createPost(Integer threadId, String message,Integer userId,String iP) {
+		Thread t = tr.findOne(threadId);
+		Post p = ForumBuilder.buildNewPost(t.getForumId(), threadId, null, message, userId, iP);
+		p.setFloor(pr.findMaxFloor(threadId));
+		return pr.saveAndFlush(p);
+	}
+
+	
 
 }

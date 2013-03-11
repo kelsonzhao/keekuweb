@@ -386,7 +386,8 @@ a:visited {
 }
 
 .topic_reply { /* border-top: solid 1px black; */
-	border-bottom: solid 8px #00a3af;;
+	border-top: solid 1px #00a3af;
+	border-bottom: solid 8px #00a3af;
 	border-left: solid 1px #00a3af;
 	border-right: solid 1px #00a3af;
 }

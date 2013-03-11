@@ -2,6 +2,9 @@
 <input type="hidden"  id="threadId"  value="<c:out value='${threadId}' />"  />
 <input type="hidden"  id="pageNum"  value="<c:out value='${pageNum}' />"  />
 <input type="hidden"  id="pageSize" value="<c:out value='${pageSize}' />"  />
+<input type="hidden"  id="forumId"  value="<c:out value='${forumId}' />"/>
+<a href="#"  onclick="getoPage(2)">Goto 2</a>
+<div id="threadContentDiv">
 <table class="topic_detail" id="topic_detail" border="0" cellspacing="0" cellpadding="0"  >
 	<tbody >
 		<tr data-template data-if-floor='1' >
@@ -20,8 +23,8 @@
 					<table style="width: 100%;">
 						<tr>
 							<td width="250px">发表于：{{createdDate | date 'YYYY-MM-DD HH:mm:ss'}} </td>
-							<td width="250px">最后修改于：{{lastUpdatedDate | date 'YYYY-MM-DD HH:mm:ss'}} </td>
-							<td  style="text-align: right;" >修改 | 回复 | {{floor | append '楼'}}</td>
+							<td width="250px"> {% if isModified %}最后修改于：{{lastUpdatedDate | date 'YYYY-MM-DD HH:mm:ss'}}{% else %}{% endif %}</td>
+							<td  style="text-align: right;" ><a href='<c:url value="/forumOpr"/>/{{threadId}}/{{postId}}/editThreadView'>修改</a> | 回复 | {{floor | append '楼'}}</td>
 						</tr>
 					</table>
 				</div>
@@ -50,8 +53,8 @@
 					<table style="width: 100%;">
 						<tr>
 							<td width="250px">发表于：{{createdDate | date 'YYYY-MM-DD HH:mm:ss'}} </td>
-							<td width="250px">最后修改于：{{lastUpdatedDate | date 'YYYY-MM-DD HH:mm:ss'}} </td>
-							<td style="text-align: right;">{{floor | append '楼'}}</td>
+							<td width="250px"> {% if isModified %}最后修改于：{{lastUpdatedDate | date 'YYYY-MM-DD HH:mm:ss'}}{% else %}{% endif %}</td>
+							<td style="text-align: right;"><a href='<c:url value="/forumOpr"/>/{{threadId}}/{{postId}}/editPostView'>修改</a> | 回复 | {{floor | append '楼'}}</td>
 						</tr>
 					</table>				
 				</div>
@@ -61,8 +64,11 @@
 		</tr>
 	</tbody>
 </table>
+</div>
+<div id="tempDiv" style="display: none;"></div>
 <script type="text/javascript">
 $(document).ready(function(){
+	$("#tempDiv").text($("#threadContentDiv").html());
 	var topicDetail = Tempo.prepare('topic_detail');
 	var url = '<c:url value="/forum/thread/"/>';
 	url = url + $("#threadId").val() +"/post/list/"+$("#pageNum").val()+"/"+$("#pageSize").val() ;
@@ -72,5 +78,25 @@ $(document).ready(function(){
 		}
 		topicDetail.render(data.data.content);
 	});
+	
 });
+function getoPage(pageNum) {
+	$("#threadContentDiv").empty();
+	$("#threadContentDiv").html($("#tempDiv").text());
+	var topicDetail = Tempo.prepare('topic_detail');
+	var url = '<c:url value="/forum/thread/"/>';
+	url = url + $("#threadId").val() +"/post/list/"+(pageNum-1)+"/"+$("#pageSize").val() ;
+	console.log("url" + url);
+	$.getJSON(url,function(data){
+		if(data == null || data.data == null || data.data.content == null ||data.data.content < 1) {
+			return ;
+		}
+		console.log("len:" + data.data.content.length);
+		topicDetail.render(data.data.content);
+	});
+};
+function gotoNewThreadView(){
+	var url = '<c:url value="/forumOpr/"/>' + $("#forumId").val() + "/newthreadView";
+	window.location.href = url;
+};
 </script>

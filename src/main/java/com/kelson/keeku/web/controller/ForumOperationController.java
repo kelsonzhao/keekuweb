@@ -15,7 +15,6 @@
  */
 package com.kelson.keeku.web.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +30,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kelson.keeku.domain.Forum;
+import com.kelson.keeku.domain.ForumBuilder;
 import com.kelson.keeku.domain.Post;
 import com.kelson.keeku.domain.Thread;
-import com.kelson.keeku.domain.ThreadStateEnum;
 import com.kelson.keeku.service.ForumService;
-import com.kelson.utils.BooleanEnum;
 
 @Controller
 @RequestMapping(value = "forumOpr/")
@@ -48,7 +47,9 @@ public class ForumOperationController extends BaseController {
 	@RequestMapping(value = "{forumId}/newthreadView", method = RequestMethod.GET)
 	public ModelAndView toNewThreadView(@PathVariable("forumId") Integer forumId,Model model) {
 		putUserInfo(model);
+		Forum f = fs.getForum(forumId);
 		model.addAttribute("forumId",forumId);
+		model.addAttribute("forumName",f.getName());
 		return new ModelAndView("newThreadView",model.asMap());
 	}
 	@RequestMapping(value = "{forumId}/newthread", method = RequestMethod.POST)
@@ -56,7 +57,8 @@ public class ForumOperationController extends BaseController {
 	public Map<String,Object> newThread(@PathVariable("forumId") Integer forumId,@Param("title") String title,@Param("content") String content,Model model,HttpServletRequest request) {
 		Map<String,Object> ret = new HashMap<String,Object>();
 		try{
-			fs.addThread(this.buildNewThread(forumId, title, content, request));
+			Thread t = fs.addThread(ForumBuilder.buildNewThread(forumId, title, content, this.getCurrentUserId(),this.getIp(request)));
+			ret.put("threadId", t.getThreadId());
 			ret.put("success", 1);
 		}catch(Exception e) {
 			ret.put("success", 0);
@@ -64,12 +66,35 @@ public class ForumOperationController extends BaseController {
 		}
 		return ret;
 	}
-	@RequestMapping(value = "{threadId}/newthreadView", method = RequestMethod.POST)
+	@RequestMapping(value = "{threadId}/{postId}/editThreadView", method = RequestMethod.GET)
+	public ModelAndView toEditThreadView(@PathVariable("threadId") Integer threadId,@PathVariable("postId") Integer postId,Model model) {
+		putUserInfo(model);
+		Post p = fs.getPost(postId);
+		model.addAttribute("threadId",threadId);
+		model.addAttribute("postId",postId);
+		model.addAttribute("updateFlag","1");//update thread
+		model.addAttribute("title",p.getSubject());//update thread
+		model.addAttribute("content",p.getMessage());//update thread
+		return new ModelAndView("newThreadView",model.asMap());
+	}
+	@RequestMapping(value = "{threadId}/{postId}/editPostView", method = RequestMethod.GET)
+	public ModelAndView toEditPostView(@PathVariable("threadId") Integer threadId,@PathVariable("postId") Integer postId,Model model) {
+		putUserInfo(model);
+		Thread t = fs.getThread(threadId);
+		Post p = fs.getPost(postId);
+		model.addAttribute("threadId",threadId);
+		model.addAttribute("subject",t.getSubject());
+		model.addAttribute("postId",postId);
+		model.addAttribute("updateFlag","2");//update post
+		model.addAttribute("content",p.getMessage());//update thread
+		return new ModelAndView("newThreadView",model.asMap());
+	}
+	@RequestMapping(value = "{threadId}/{postId}/editThread", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> editThread(@PathVariable("threadId") Integer threadId,@Param("title") String title,@Param("content") String content,Model model,HttpServletRequest request) {
+	public Map<String,Object> editThread(@PathVariable("threadId") Integer threadId,@PathVariable("postId") Integer postId,@Param("title") String title,@Param("content") String content,Model model,HttpServletRequest request) {
 		Map<String,Object> ret = new HashMap<String,Object>();
 		try{
-			//update thread
+			fs.eidtThread(threadId, postId, title, content);
 			ret.put("success", 1);
 		}catch(Exception e) {
 			ret.put("success", 0);
@@ -77,34 +102,42 @@ public class ForumOperationController extends BaseController {
 		}
 		return ret;
 	}
-    public Thread buildNewThread(Integer forumId,String title,String content,HttpServletRequest request){
-    	//Thread
-    	Thread t = new Thread();
-    	t.setForumId(forumId);
-    	t.setSubject(title);
-    	t.setCreatedDate(new Date());
-    	t.setLastUpdatedDate(new Date());
-    	t.setAuthorUserId(this.getCurrentUserId());
-    	t.setLastUpdatedByUserId(this.getCurrentUserId());
-    	t.setState(ThreadStateEnum.NORMAL.ordinal());
-    	t.setDigest(BooleanEnum.FALSE.ordinal());
-    	t.setViews(0);
-    	t.setReplies(0);
-    	
-    	//Post
-    	Post p = new Post();
-    	p.setForumId(forumId);
-    	p.setSubject(title);
-    	p.setCreatedDate(new Date());
-    	p.setLastUpdatedDate(new Date());
-    	p.setAuthorUserId(this.getCurrentUserId());
-    	p.setAuthorIp(this.getIp(request));
-    	p.setLastUpdatedByUserId(this.getCurrentUserId());
-    	p.setMessage(content);
-    	p.setFloor(0);
-    	
-    	t.setPost(p);
-    	return t;
-    }
+	@RequestMapping(value = "{threadId}/{postId}/editPost", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> editPost(@PathVariable("threadId") Integer threadId,@PathVariable("postId") Integer postId,@Param("content") String content,Model model,HttpServletRequest request) {
+		Map<String,Object> ret = new HashMap<String,Object>();
+		try{
+			fs.eidtPost(threadId, postId, content);
+			ret.put("success", 1);
+		}catch(Exception e) {
+			ret.put("success", 0);
+			ret.put("message",e);
+		}
+		return ret;
+	}
+	@RequestMapping(value = "{threadId}/createPostView", method = RequestMethod.GET)
+	public ModelAndView toCreatePostView(@PathVariable("threadId") Integer threadId,Model model) {
+		putUserInfo(model);
+		Thread t = fs.getThread(threadId);
+		model.addAttribute("forumId",t.getForumId());
+		model.addAttribute("forumName",t.getForum().getName());
+		model.addAttribute("threadId",threadId);
+		model.addAttribute("subject",t.getSubject());
+		model.addAttribute("updateFlag","3");//create post
+		return new ModelAndView("newThreadView",model.asMap());
+	}
+	@RequestMapping(value = "{threadId}/createPost", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> createPost(@PathVariable("threadId") Integer threadId,@Param("content") String content,Model model,HttpServletRequest request) {
+		Map<String,Object> ret = new HashMap<String,Object>();
+		try{
+			fs.createPost(threadId, content, this.getCurrentUserId(), this.getIp(request));
+			ret.put("success", 1);
+		}catch(Exception e) {
+			ret.put("success", 0);
+			ret.put("message",e);
+		}
+		return ret;
+	}
 
 }

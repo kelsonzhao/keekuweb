@@ -16,6 +16,9 @@
 	<definition name="rightSidebar4NewThreadView" extends="rightSidebarTemplate"> 
 		<put-attribute name="operations" value="/WEB-INF/views/jsp/rightSidebar/rightSidebar4NewThread.jsp" />
 	</definition>	
+	<definition name="rightSidebar4ThreadPostView" extends="rightSidebarTemplate"> 
+		<put-attribute name="operations" value="/WEB-INF/views/jsp/rightSidebar/rightSidebar4ThreadPost.jsp" />
+	</definition>	
 	<definition name="home" extends="mainLayoutTemplate">
 		<put-attribute name="title" value="Keeku" />
 		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
@@ -39,7 +42,7 @@
 		<put-attribute name="title" value="Keeku" />
 		<put-attribute name="resource" value="/WEB-INF/views/jsp/resources/resource_01.jsp" />
 		<put-attribute name="content" value="/WEB-INF/views/jsp/forum/threadPostsView.jsp" />
-		<put-attribute name="right-sidebar"  value="rightSidebar4FourmView"/>
+		<put-attribute name="right-sidebar"  value="rightSidebar4ThreadPostView"/>
 	</definition>
 	<definition name="newThreadView" extends="mainLayoutTemplate">
 		<put-attribute name="title" value="Keeku" />

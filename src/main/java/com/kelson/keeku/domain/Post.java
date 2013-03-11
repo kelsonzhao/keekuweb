@@ -25,6 +25,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -63,6 +64,17 @@ public class Post implements Serializable {
     @JoinColumn(name="authorUserId",insertable=false,updatable=false)
 	@Fetch(FetchMode.JOIN)
 	private User1 author;
+	
+	private int isModified;
+
+	
+	public int getIsModified() {
+		return isModified;
+	}
+
+	public void setIsModified(int isModified) {
+		this.isModified = isModified;
+	}
 
 	public Integer getPostId() {
 		return postId;
