@@ -55,4 +55,7 @@ public class BaseController {
 	public int getDefaultPageSize() {
 		return 10;
 	}
+	public int getTotalPage(int count,int size) {
+		return (count/size) + 1;
+	}
 }

@@ -76,6 +76,12 @@ public class ForumServiceImpl extends BaseService implements ForumService{
 	}
 
 	@Override
+	public int getThreadPostTotalPage(Integer threadId,int size) {
+		int totalCount = (int) pr.getPostCountInThread(threadId);
+		return totalCount/size + ((totalCount%size) == 0 ? 0 : 1);
+	}
+
+	@Override
 	public Post addPost(Post post) {
 		post.setFloor(pr.findMaxFloor(post.getThreadId()));
 		pr.saveAndFlush(post);
@@ -131,8 +137,11 @@ public class ForumServiceImpl extends BaseService implements ForumService{
 	public Post createPost(Integer threadId, String message,Integer userId,String iP) {
 		Thread t = tr.findOne(threadId);
 		Post p = ForumBuilder.buildNewPost(t.getForumId(), threadId, null, message, userId, iP);
-		p.setFloor(pr.findMaxFloor(threadId));
-		return pr.saveAndFlush(p);
+		int floor = pr.findMaxFloor(threadId);
+		p.setFloor(floor);
+		pr.saveAndFlush(p);
+		tr.updateThreadReplies(threadId,new Date(), getCurrentUser(),floor);
+		return p;
 	}
 
 	

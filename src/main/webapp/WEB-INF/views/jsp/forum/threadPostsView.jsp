@@ -3,12 +3,14 @@
 <input type="hidden"  id="pageNum"  value="<c:out value='${pageNum}' />"  />
 <input type="hidden"  id="pageSize" value="<c:out value='${pageSize}' />"  />
 <input type="hidden"  id="forumId"  value="<c:out value='${forumId}' />"/>
-<a href="#"  onclick="getoPage(2)">Goto 2</a>
+<div class="page"></div>
+<hr class="clear">
 <div id="threadContentDiv">
 <table class="topic_detail" id="topic_detail" border="0" cellspacing="0" cellpadding="0"  >
 	<tbody >
 		<tr data-template data-if-floor='1' >
 			<td class="topic_main floor_left">
+				<div  id="{{floor}}"></div>
 				<ul>
 					<li><a href="<c:url value='/'/>__.authorUserId/home" >{{author.userName}}</a></li>
 				</ul>
@@ -39,6 +41,7 @@
 		</tr>
 		<tr data-template >
 			<td class="topic_reply floor_left">
+				<div    id="{{floor}}"></div>
 				<ul>
 					<li><a href="<c:url value='/'/>__.authorUserId/home" >{{author.userName}}</a></li>
 				</ul>
@@ -65,35 +68,51 @@
 	</tbody>
 </table>
 </div>
-<div id="tempDiv" style="display: none;"></div>
+<div class="page"></div>
+<!-- <div id="tempDiv" style="display: none;"></div> -->
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#tempDiv").text($("#threadContentDiv").html());
+	//$("#tempDiv").text($("#threadContentDiv").html());
 	var topicDetail = Tempo.prepare('topic_detail');
 	var url = '<c:url value="/forum/thread/"/>';
-	url = url + $("#threadId").val() +"/post/list/"+$("#pageNum").val()+"/"+$("#pageSize").val() ;
+	url = url + $("#threadId").val() +"/post/list/"+$("#pageNum").val() ;
 	$.getJSON(url,function(data){
 		if(data == null || data.data == null || data.data.content == null ||data.data.content < 1) {
 			return ;
 		}
 		topicDetail.render(data.data.content);
+		var settings = {
+				totalPage : data.data.totalPages,
+				currentPage : data.data.number,
+				pageClassName : "page",
+				onClick : function() {
+					console.log("condition result false." + $(this).attr("page"));
+					var pageNum = Number($(this).attr("page"));
+					var url = '<c:url value="/forum/thread/"/>';
+					url = url + $("#threadId").val() +"/viewpost/"+(pageNum-1) ;
+					console.log("url" + url);
+					window.location.href = url;
+				}
+		};
+		$(".page").myPage(settings);
 	});
-	
 });
 function getoPage(pageNum) {
-	$("#threadContentDiv").empty();
-	$("#threadContentDiv").html($("#tempDiv").text());
-	var topicDetail = Tempo.prepare('topic_detail');
+	//$("#threadContentDiv").empty();
+	//$("#threadContentDiv").html($("#tempDiv").text());
+	//var topicDetail = Tempo.prepare('topic_detail');
 	var url = '<c:url value="/forum/thread/"/>';
-	url = url + $("#threadId").val() +"/post/list/"+(pageNum-1)+"/"+$("#pageSize").val() ;
+	url = url + $("#threadId").val() +"/viewpost/"+(pageNum-1) ;
 	console.log("url" + url);
+	window.location.href = url;
+	/* return ;
 	$.getJSON(url,function(data){
 		if(data == null || data.data == null || data.data.content == null ||data.data.content < 1) {
 			return ;
 		}
 		console.log("len:" + data.data.content.length);
 		topicDetail.render(data.data.content);
-	});
+	}); */
 };
 function gotoNewThreadView(){
 	var url = '<c:url value="/forumOpr/"/>' + $("#forumId").val() + "/newthreadView";

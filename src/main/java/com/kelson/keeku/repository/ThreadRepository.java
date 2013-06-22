@@ -35,5 +35,9 @@ public interface ThreadRepository extends JpaRepository<Thread, Integer> {
 	@Query(value="update Thread t set t.subject=?2,t.lastUpdatedDate=?3,t.lastUpdatedByUserId=?4  where  t.threadId = ?1")
 	int editThread(Integer threadId,String subject,Date currentTime,Integer operatorId);
 	
+	@Modifying
+	@Query(value="update Thread t set t.replies=?4,t.lastUpdatedDate=?2,t.lastUpdatedByUserId=?3  where  t.threadId = ?1")
+	int updateThreadReplies(Integer threadId,Date currentTime,Integer operatorId,Integer count);
+	
 
 }

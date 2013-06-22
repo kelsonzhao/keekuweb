@@ -92,9 +92,9 @@
 				if(data.success == 1) {
 					var redirect2 =  url;
 					if($("#updateFlag").val() == "1" || $("#updateFlag").val() == "2" || $("#updateFlag").val() == "3") {
-						redirect2  = '<c:url value="/forum/thread"/>' +"/" + $("#threadId").val() +"/viewpost/0/10"   ;
+						redirect2  = '<c:url value="/forum/thread"/>' +"/" + $("#threadId").val() +"/viewpost/lastpage"   ;
 					}else {
-						redirect2  = '<c:url value="/forum/thread"/>' +"/" +data.threadId +"/viewpost/0/10"   ;
+						redirect2  = '<c:url value="/forum/thread"/>' +"/" +data.threadId +"/viewpost/lastpage"   ;
 					};	
 					window.location.href = redirect2;
 				}else {

@@ -59,6 +59,15 @@ public class ForumServiceTest extends BaseTest {
 		setSecurity("kelsonzhao", "123456");
 	}
 	@Test
+	public void getPostCountInThread() {
+		logger.info("f name : " + pr.getPostCountInThread(1));
+	}
+	@Test
+	@Rollback(false)
+	public void updateThreadReplies() {
+		tr.updateThreadReplies(1, new Date(), (Integer)subject.getSession().getAttribute("userId"),22);
+	}
+	@Test
 	public void findThread(){
 		Thread t = tr.findOne(1);
 		logger.info("f name : " + t.getForum().getName());

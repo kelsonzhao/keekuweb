@@ -51,5 +51,7 @@ public interface ForumService {
 	public Thread getThread(Integer threadId);
 	
 	public Forum getForum(Integer forumId);
+	
+	public int getThreadPostTotalPage(Integer threadId,int size);
 
 }

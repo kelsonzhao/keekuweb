@@ -33,8 +33,11 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query(value = "select p  from Post p where threadId = :threadId")
 	Page<Post> findAll(@Param("threadId") Integer threadId, Pageable pageable);
 
-	@Query(value="select max(floor) + 1 from Post p where threadId = ?1")
-	int findMaxFloor(Integer floor);
+	@Query(value="select max(floor) + 1 from Post p where p.threadId = ?1")
+	int findMaxFloor(Integer threadId);
+	
+	@Query(value="select count(*) from Post p where p.threadId = ?1")
+	long getPostCountInThread(Integer threadId);
 	
 	@Modifying
 	@Query(value="update Post p set p.subject=?3,p.message=?4,p.lastUpdatedDate=?5,p.lastUpdatedByUserId=?6,p.isModified=1  where  p.threadId = ?1 and p.postId =?2")

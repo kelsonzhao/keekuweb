@@ -28,6 +28,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -84,19 +85,40 @@ public class ForumController extends BaseController {
 		return ret;
 	}
 
-	@RequestMapping(value = "thread/{threadId}/post/list/{pageNum}/{pageSize}", method = RequestMethod.GET)
+	@RequestMapping(value = "thread/{threadId}/post/list/{pageNum}", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> listPosts(@PathVariable("threadId") Integer threadId, @PathVariable("pageNum") Integer pageNum,
-			@PathVariable("pageSize") Integer pageSize) {
+	public Map<String, Object> listPosts(@PathVariable("threadId") Integer threadId, @PathVariable("pageNum") String pageNum) {
 		Map<String, Object> ret = new HashMap<String, Object>();
-		Pageable pageable = new PageRequest(pageNum, pageSize);
+		Pageable pageable = null;
+		int pageSize = this.getDefaultPageSize();
+		if("lastpage".equals(pageNum)) {
+			pageable = new PageRequest(fs.getThreadPostTotalPage(threadId, pageSize)-1, pageSize);//页码从0开始 
+		}else if("firstpage".equals(pageNum)) {
+			pageable = new PageRequest(0, pageSize);//页码从0开始 
+		}else {
+			try{
+				pageable = new PageRequest(Integer.valueOf(pageNum), pageSize);//页码从0开始 
+			}catch(Exception e) {
+				pageable = new PageRequest(0, pageSize);//页码从0开始 
+			}
+		}
 		Page<Post> result = fs.listPosts(pageable, threadId);
 		ret.put("data", result);
 		return ret;
 	}
 
+	@RequestMapping(value = "thread/{threadId}/viewpost/{pageNum}", method = RequestMethod.GET)
+	public ModelAndView viewpost(@PathVariable("threadId") Integer threadId, @PathVariable("pageNum") String pageNum,Model model) {
+		putUserInfo(model);
+		Thread t = fs.getThread(threadId);
+		model.addAttribute("forumId", t.getForumId());
+		model.addAttribute("threadId", threadId);
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageSize", this.getDefaultPageSize());
+		return new ModelAndView("threadPostsView", model.asMap());
+	}
 	@RequestMapping(value = "thread/{threadId}/viewpost", method = RequestMethod.GET)
-	public ModelAndView home(@PathVariable("threadId") Integer threadId, Model model) {
+	public ModelAndView viewpostInPage(@PathVariable("threadId") Integer threadId,Model model) {
 		putUserInfo(model);
 		Thread t = fs.getThread(threadId);
 		model.addAttribute("forumId", t.getForumId());
@@ -105,5 +127,6 @@ public class ForumController extends BaseController {
 		model.addAttribute("pageSize", this.getDefaultPageSize());
 		return new ModelAndView("threadPostsView", model.asMap());
 	}
+	
 
 }

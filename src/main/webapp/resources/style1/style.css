@@ -131,10 +131,12 @@ a:visited {
 	padding: 10px 10px;
 	/* background-color: yellow; */
 }
-.contentInput{
+
+.contentInput {
 	width: auto;
 	height: 700px;
 }
+
 #footer {
 	margin: 0 auto;
 	width: 100%;
@@ -153,9 +155,9 @@ a:visited {
 .left-sidebar-logo {
 	left: 5px;
 	top: 12px;
-	background-position: -20px -5px;
-	width: 200px;
-	height: 60px;
+	background-position: -5px -8px;
+	width: 100px;
+	height: 135px;
 }
 
 .tile_item {
@@ -416,6 +418,7 @@ a:visited {
 	margin: 0 10px;
 	text-indent: 0;
 }
+
 .floor_right_title {
 	border-bottom: dashed 1px #00a3af;
 	font-size: 1em;
@@ -424,15 +427,17 @@ a:visited {
 	line-height: 1.2em;
 	padding: 0.5em 0;
 }
-.floor_right_main{
+
+.floor_right_main {
 	margin: 0.5em 15px;
 	text-indent: 0;
 	height: auto;
 	min-height: 130px;
 }
-.floor_right_bottom{
+
+.floor_right_bottom {
 	border-top: solid 1px #00a3af;
-	font-size : 0.8em;
+	font-size: 0.8em;
 	height: auto;
 	min-height: 60px;
 	text-indent: 10px;
@@ -496,4 +501,23 @@ a:visited {
 	position: relative;
 	left: -9px;
 	top: 8px;
+}
+
+.page {
+	height: 1em;
+	line-height: 1em;
+	margin-bottom: 15px;
+	margin-top: 5px;
+}
+
+.page a {
+	padding: 2px 7px;
+	margin : 0px 4px 0px 0px;
+	border:  solid 1px  #CCC;
+	font-family: Tahoma;
+	color: #444;
+}
+.page .selected {
+	background-color: #7798CB;
+	color:  white;
 }

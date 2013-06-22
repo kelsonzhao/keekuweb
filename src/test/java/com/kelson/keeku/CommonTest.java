@@ -12,6 +12,13 @@ import org.junit.Test;
 public class CommonTest {
 	
 	@Test
+	public void testNumber() {
+		long totalCount =1;
+		int size = 2;
+		System.out.println(totalCount/size + ((totalCount%size) == 0 ? 0 : 1));
+	}
+	
+	@Test
 	public void testPatternMatcher() {
 		PatternMatcher pm = new AntPathMatcher();
 		System.out.println("ret:" + pm.matches("/login/**", "/login/please"));
