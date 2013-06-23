@@ -34,6 +34,12 @@ public class HomeController extends BaseController{
 		return new ModelAndView("home",model.asMap());
 	}
 	
+	@RequestMapping(value = "/jqplot_test", method = RequestMethod.GET)
+	public ModelAndView toJqplotTest(Locale locale, Model model) {
+		putUserInfo(model);
+		return new ModelAndView("jqplot_test",model.asMap());
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> login(HttpServletRequest request){
