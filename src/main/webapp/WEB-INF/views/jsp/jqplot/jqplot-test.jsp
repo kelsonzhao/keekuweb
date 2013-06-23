@@ -1,70 +1,71 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%><%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<div style="text-align: center;">
-
-
-</div>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%><%@ taglib
+	uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<div style="text-align: center;"></div>
 
 
 
 <div id="Transitions_Container">
-<div id="Transitions_CenterBox" class="Transitions_Text">
-<h2></h2>
-<div class="Transitions_CenterBoxMetrics">
-<p class="Transitions_Pageviews Transitions_Margin">%s 次访问</p>
-<div class="Transitions_IncomingTraffic">
-<h3>入口流量</h3>
-<p class="Transitions_PreviousPages">%s 次来自站内页面</p>
-<p class="Transitions_PreviousSiteSearches">%s 次来自站内搜索</p>
-<p class="Transitions_SearchEngines">%s 次来自搜索引擎</p>
-<p class="Transitions_Websites">%s 次来自外部网站</p>
-<p class="Transitions_Campaigns">%s 次来自广告</p>
-<p class="Transitions_DirectEntries">%s 次来自直接访问</p>
-</div>
-<div class="Transitions_OutgoingTraffic">
-<h3>出口流量</h3>
-<p class="Transitions_FollowingPages">%s 次转向站内页面</p>
-<p class="Transitions_FollowingSiteSearches">%s 次站内搜索</p>
-<p class="Transitions_Downloads">%s 次下载</p>
-<p class="Transitions_Outlinks">%s 次离站链接</p>
-<p class="Transitions_Exits">%s 次退出</p>
-</div>
-</div>
-</div>
-<div id="Transitions_Loops" class="Transitions_Text">
-%s 次刷新页面
-</div>
-<div id="Transitions_Canvas_Background_Left" class="Transitions_Canvas_Container"></div>
-<div id="Transitions_Canvas_Background_Right" class="Transitions_Canvas_Container"></div>
-<div id="Transitions_Canvas_Left" class="Transitions_Canvas_Container"></div>
-<div id="Transitions_Canvas_Right" class="Transitions_Canvas_Container"></div>
-<div id="Transitions_Canvas_Loops" class="Transitions_Canvas_Container"></div>
+	<div id="Transitions_CenterBox" class="Transitions_Text">
+		<h2></h2>
+		<div class="Transitions_CenterBoxMetrics">
+			<p class="Transitions_Pageviews Transitions_Margin">%s 次访问</p>
+			<div class="Transitions_IncomingTraffic">
+				<h3>入口流量</h3>
+				<p class="Transitions_PreviousPages">%s 次来自站内页面</p>
+				<p class="Transitions_PreviousSiteSearches">%s 次来自站内搜索</p>
+				<p class="Transitions_SearchEngines">%s 次来自搜索引擎</p>
+				<p class="Transitions_Websites">%s 次来自外部网站</p>
+				<p class="Transitions_Campaigns">%s 次来自广告</p>
+				<p class="Transitions_DirectEntries">%s 次来自直接访问</p>
+			</div>
+			<div class="Transitions_OutgoingTraffic">
+				<h3>出口流量</h3>
+				<p class="Transitions_FollowingPages">%s 次转向站内页面</p>
+				<p class="Transitions_FollowingSiteSearches">%s 次站内搜索</p>
+				<p class="Transitions_Downloads">%s 次下载</p>
+				<p class="Transitions_Outlinks">%s 次离站链接</p>
+				<p class="Transitions_Exits">%s 次退出</p>
+			</div>
+		</div>
+	</div>
+	<div id="Transitions_Loops" class="Transitions_Text">%s 次刷新页面</div>
+	<div id="Transitions_Canvas_Background_Left"
+		class="Transitions_Canvas_Container"></div>
+	<div id="Transitions_Canvas_Background_Right"
+		class="Transitions_Canvas_Container"></div>
+	<div id="Transitions_Canvas_Left" class="Transitions_Canvas_Container"></div>
+	<div id="Transitions_Canvas_Right" class="Transitions_Canvas_Container"></div>
+	<div id="Transitions_Canvas_Loops" class="Transitions_Canvas_Container"></div>
 </div>
 <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function() {
 		var ts = new Transitions();
 		ts.init();
 	});
 	function Transitions() {
 		this.model = new Transitions_Model();
 		this.leftGroups = [ 'previousPages', 'previousSiteSearches',
-		        			'searchEngines', 'websites', 'campaigns' ];
-		        	this.rightGroups = [ 'followingPages', 'followingSiteSearches',
-		        			'downloads', 'outlinks' ];
+				'searchEngines', 'websites', 'campaigns' ];
+		this.rightGroups = [ 'followingPages', 'followingSiteSearches',
+				'downloads', 'outlinks' ];
 	}
 	Transitions.prototype.init = function() {
 		var self = this;
 		self.prepare();
 		self.model.htmlLoaded();
-		self.model.loadData(function(){
-			if (self.model.searchEnginesNbTransitions > 0
-					&& self.model.websitesNbTransitions > 0 + self.model.campaignsNbTransitions > 0) {
-				self.canvas.narrowMode();
-			}
-			self.render();
-			self.canvas.truncateVisibleBoxTexts();
-		});
+		self.model
+				.loadData(function() {
+					if (self.model.searchEnginesNbTransitions > 0
+							&& self.model.websitesNbTransitions > 0 + self.model.campaignsNbTransitions > 0) {
+						self.canvas.narrowMode();
+					}
+					self.render();
+					self.canvas.truncateVisibleBoxTexts();
+				});
 	};
-	Transitions.prototype.render = function () {
+	Transitions.prototype.render = function() {
 		this.renderCenterBox();
 		this.renderLeftSide();
 		this.renderRightSide();
@@ -75,7 +76,8 @@
 			return;
 		}
 		var loops = $('#Transitions_Loops').show();
-		Piwik_Transitions_Util.replacePlaceholderInHtml(loops, this.model.loops);
+		Piwik_Transitions_Util
+				.replacePlaceholderInHtml(loops, this.model.loops);
 		this.addTooltipShowingPercentageOfAllPageviews(loops, 'loops');
 		this.canvas.renderLoops(this.model.getPercentage('loops'));
 	};
@@ -84,15 +86,16 @@
 		Piwik_Transitions_Util.replacePlaceholderInHtml(box
 				.find('.Transitions_Pageviews'), this.model.pageviews);
 		var self = this;
-		var showMetric = function(cssClass, modelProperty, highlightCurveOnSide,
-				groupCanBeExpanded) {
+		var showMetric = function(cssClass, modelProperty,
+				highlightCurveOnSide, groupCanBeExpanded) {
 			var el = box.find('.Transitions_' + cssClass);
 			Piwik_Transitions_Util.replacePlaceholderInHtml(el,
 					self.model[modelProperty]);
 			if (self.model[modelProperty] == 0) {
 				el.addClass('Transitions_Value0');
 			} else {
-				self.addTooltipShowingPercentageOfAllPageviews(el, modelProperty);
+				self.addTooltipShowingPercentageOfAllPageviews(el,
+						modelProperty);
 				var groupName = cssClass.charAt(0).toLowerCase()
 						+ cssClass.substr(1);
 				el.hover(function() {
@@ -114,9 +117,10 @@
 		showMetric('SearchEngines', 'searchEnginesNbTransitions', 'left', true);
 		showMetric('Websites', 'websitesNbTransitions', 'left', true);
 		showMetric('Campaigns', 'campaignsNbTransitions', 'left', true);
-		showMetric('FollowingPages', 'followingPagesNbTransitions', 'right', true);
-		showMetric('FollowingSiteSearches', 'followingSiteSearchesNbTransitions',
-				'right', true);
+		showMetric('FollowingPages', 'followingPagesNbTransitions', 'right',
+				true);
+		showMetric('FollowingSiteSearches',
+				'followingSiteSearchesNbTransitions', 'right', true);
 		showMetric('Outlinks', 'outlinksNbTransitions', 'right', true);
 		showMetric('Downloads', 'downloadsNbTransitions', 'right', true);
 		showMetric('Exits', 'exits', 'right', false);
@@ -127,13 +131,15 @@
 			return;
 		}
 		if (this.highlightedGroup !== false) {
-			this.unHighlightGroup(this.highlightedGroup, this.highlightedGroupSide);
+			this.unHighlightGroup(this.highlightedGroup,
+					this.highlightedGroupSide);
 		}
 		this.highlightedGroup = groupName;
 		this.highlightedGroupSide = side;
 		var cssClass = 'Transitions_' + groupName.charAt(0).toUpperCase()
 				+ groupName.substr(1);
-		this.highlightedGroupCenterEl = this.canvas.container.find('.' + cssClass);
+		this.highlightedGroupCenterEl = this.canvas.container.find('.'
+				+ cssClass);
 		this.highlightedGroupCenterEl.addClass('Transitions_Highlighted');
 		this.canvas.clearSide(side, true);
 		if (side == 'left') {
@@ -165,7 +171,8 @@
 		this.reRenderIfNeededToCenter('left', onlyBg);
 	};
 	Transitions.prototype.renderRightSide = function(onlyBg) {
-		this.renderGroups(this.rightGroups, this.rightOpenGroup, 'right', onlyBg);
+		this.renderGroups(this.rightGroups, this.rightOpenGroup, 'right',
+				onlyBg);
 		this.renderExits(onlyBg);
 		this.reRenderIfNeededToCenter('right', onlyBg);
 	};
@@ -226,14 +233,13 @@
 		}
 		this.canvas.addBoxSpacing(13, side);
 	};
-	Transitions.prototype.renderClosedGroup = function(groupName, side,
-			onlyBg) {
+	Transitions.prototype.renderClosedGroup = function(groupName, side, onlyBg) {
 		var self = this;
-		var gradient = this.canvas.createHorizontalGradient('#DDE4ED', '#9BBADE',
-				side);
+		var gradient = this.canvas.createHorizontalGradient('#DDE4ED',
+				'#9BBADE', side);
 		if (groupName == this.highlightedGroup) {
-			gradient = this.canvas.createHorizontalGradient('#FAE2C0', '#FAD293',
-					side);
+			gradient = this.canvas.createHorizontalGradient('#FAE2C0',
+					'#FAD293', side);
 		}
 		var nbTransitionsVarName = groupName + 'NbTransitions';
 		if (self.model[nbTransitionsVarName] == 0) {
@@ -302,12 +308,18 @@
 		var self = this;
 		var width = 900;
 		var height = 550;
-		var canvasBgLeft = self.prepareCanvas('Transitions_Canvas_Background_Left', width, height);
-		var canvasBgRight = self.prepareCanvas('Transitions_Canvas_Background_Right', width, height);
-		var canvasLeft = self.prepareCanvas('Transitions_Canvas_Left', width, height);
-		var canvasRight = self.prepareCanvas('Transitions_Canvas_Right', width, height);
-		var canvasLoops = self.prepareCanvas('Transitions_Canvas_Loops', width, height);
-		self.canvas = new Transitions_Canvas(canvasBgLeft, canvasBgRight, canvasLeft, canvasRight, canvasLoops, width, height);
+		var canvasBgLeft = self.prepareCanvas(
+				'Transitions_Canvas_Background_Left', width, height);
+		var canvasBgRight = self.prepareCanvas(
+				'Transitions_Canvas_Background_Right', width, height);
+		var canvasLeft = self.prepareCanvas('Transitions_Canvas_Left', width,
+				height);
+		var canvasRight = self.prepareCanvas('Transitions_Canvas_Right', width,
+				height);
+		var canvasLoops = self.prepareCanvas('Transitions_Canvas_Loops', width,
+				height);
+		self.canvas = new Transitions_Canvas(canvasBgLeft, canvasBgRight,
+				canvasLeft, canvasRight, canvasLoops, width, height);
 		self.centerBox = $('#Transitions_CenterBox');
 		var title = self.actionName;
 		if (self.actionType == 'url') {
@@ -323,21 +335,23 @@
 		}
 		var element = title.add($('p.Transitions_Pageviews'));
 	};
-	
-	Transitions.prototype.prepareCanvas = function(canvasId,width,height) {
+
+	Transitions.prototype.prepareCanvas = function(canvasId, width, height) {
 		var div = $('#' + canvasId).width(width).height(height);
 		var canvas;
-		if(typeof Transitions.canvasCache == 'undefined' || typeof window.G_vmlCanvasManager != 'undefined') {
-			Transitions.canvasCache  = {};
+		if (typeof Transitions.canvasCache == 'undefined'
+				|| typeof window.G_vmlCanvasManager != 'undefined') {
+			Transitions.canvasCache = {};
 		}
-		if(typeof Transitions.canvasCache[canvasId] == 'undefined') {
-			Transitions.canvasCache[canvasId] = document.createElement('canvas');
-			canvas = Transitions.canvasCache[canvasId] ;
+		if (typeof Transitions.canvasCache[canvasId] == 'undefined') {
+			Transitions.canvasCache[canvasId] = document
+					.createElement('canvas');
+			canvas = Transitions.canvasCache[canvasId];
 			canvas.width = width;
 			canvas.height = height;
-		}else {
-			canvas = Transitions.canvasCache[canvasId] ;
-			canvas.getContext('2d').clearRect(0,0,width,height);
+		} else {
+			canvas = Transitions.canvasCache[canvasId];
+			canvas.getContext('2d').clearRect(0, 0, width, height);
 		}
 		div.append(canvas);
 		return canvas;
@@ -347,7 +361,7 @@
 		var tip = Piwik_Transitions_Translations.XOfAllPageviews;
 		var percentage = this.model.getPercentage(metric, true);
 		tip = tip.replace(/%s/, '<b>' + percentage + '</b>');
-		
+
 	};
 	function Transitions_Canvas(canvasBgLeft, canvasBgRight, canvasLeft,
 			canvasRight, canvasLoops, width, height) {
@@ -390,18 +404,19 @@
 				- this.boxWidth;
 		this.rightCurveBeginX = this.rightCurveEndX - this.curveWidth;
 	}
-	
-	Transitions_Canvas.prototype.narrowMode = function(){
+
+	Transitions_Canvas.prototype.narrowMode = function() {
 		this.smallBoxHeight = 26;
 		this.boxSpacing = 4;
 		this.narrowMode = true;
 	};
-	
-	Transitions_Canvas.prototype.isNarrowMode = function(){
+
+	Transitions_Canvas.prototype.isNarrowMode = function() {
 		return typeof this.narrowMode != 'undefined';
 	};
-	
-	Transitions_Canvas.prototype.createHorizontalGradient = function (lightColor, darkColor, position){
+
+	Transitions_Canvas.prototype.createHorizontalGradient = function(
+			lightColor, darkColor, position) {
 		var fromX, toX, fromColor, toColor;
 		if (position == 'left') {
 			fromX = this.leftBoxBeginX + 50;
@@ -414,13 +429,15 @@
 			fromColor = darkColor;
 			toColor = lightColor;
 		}
-		var gradient = this.contextBgLeft.createLinearGradient(fromX, 0, toX, 0);
+		var gradient = this.contextBgLeft
+				.createLinearGradient(fromX, 0, toX, 0);
 		gradient.addColorStop(0, fromColor);
 		gradient.addColorStop(1, toColor);
 		return gradient;
 	};
-	
-	Transitions_Canvas.prototype.renderText = function (text,x,y,cssClass,onClick,icon,maxLines) {
+
+	Transitions_Canvas.prototype.renderText = function(text, x, y, cssClass,
+			onClick, icon, maxLines) {
 		var div = this.addDomElement('div', 'Text');
 		div.css({
 			left : x + 'px',
@@ -455,44 +472,53 @@
 		}
 		return div;
 	};
-	
+
 	Transitions_Canvas.prototype.addDomElement = function(tagName, cssClass) {
 		var el = $(document.createElement('div')).addClass(
 				'Transitions_' + cssClass);
 		this.container.append(el);
 		return el;
 	};
-	
+
 	Transitions_Canvas.prototype.truncateVisibleBoxTexts = function() {
-		this.container.find('.Transitions_ApplyTextAndTruncate').each(function() {
-			var container = $(this).html('<span>');
-			var span = container.find('span');
-			var text = container.data('text');
-			
-			var divHeight = container.innerHeight();
-			if (container.data('maxLines')) {
-				divHeight = container.data('maxLines')
-						* (parseInt(container.css('lineHeight'), 10) + .2);
-			}
-			var leftPart = false;
-			var rightPart = false;
-			while (divHeight < span.outerHeight()) {
-				if (leftPart === false) {
-					var middle = Math.round(text.length / 2);
-					leftPart = text.substring(0, middle);
-					rightPart = text.substring(middle, text.length);
-				}
-				leftPart = leftPart.substring(0, leftPart.length - 2);
-				rightPart = rightPart.substring(2, rightPart.length);
-				text = leftPart + '...' + rightPart;
-				span.html(piwikHelper.addBreakpointsToUrl(text));
-			}
-			span.removeClass('Transitions_Truncate');
-			
-		});
+		this.container
+				.find('.Transitions_ApplyTextAndTruncate')
+				.each(
+						function() {
+							var container = $(this).html('<span>');
+							var span = container.find('span');
+							var text = container.data('text');
+
+							var divHeight = container.innerHeight();
+							if (container.data('maxLines')) {
+								divHeight = container.data('maxLines')
+										* (parseInt(
+												container.css('lineHeight'), 10) + .2);
+							}
+							var leftPart = false;
+							var rightPart = false;
+							while (divHeight < span.outerHeight()) {
+								if (leftPart === false) {
+									var middle = Math.round(text.length / 2);
+									leftPart = text.substring(0, middle);
+									rightPart = text.substring(middle,
+											text.length);
+								}
+								leftPart = leftPart.substring(0,
+										leftPart.length - 2);
+								rightPart = rightPart.substring(2,
+										rightPart.length);
+								text = leftPart + '...' + rightPart;
+								span
+										.html(piwikHelper
+												.addBreakpointsToUrl(text));
+							}
+							span.removeClass('Transitions_Truncate');
+
+						});
 	};
-	
-	Transitions_Canvas.prototype.renderBox = function (params) {
+
+	Transitions_Canvas.prototype.renderBox = function(params) {
 		var curveHeight = params.curveHeight ? params.curveHeight : Math
 				.round(this.totalHeightOfConnections * params.share);
 		curveHeight = Math.max(curveHeight, 1);
@@ -508,7 +534,8 @@
 			context = params.side == 'left' ? this.contextBgLeft
 					: this.contextBgRight;
 		} else {
-			context = params.side == 'left' ? this.contextLeft : this.contextRight;
+			context = params.side == 'left' ? this.contextLeft
+					: this.contextRight;
 		}
 		context.fillStyle = params.gradient;
 		context.beginPath();
@@ -543,7 +570,8 @@
 				el.addClass('Transitions_' + params.boxTextCssClass);
 			}
 			if (params.boxTextTooltip) {
-				var tip = piwikHelper.addBreakpointsToUrl(params.boxTextTooltip);
+				var tip = piwikHelper
+						.addBreakpointsToUrl(params.boxTextTooltip);
 				el.tooltip({
 					track : true,
 					content : tip,
@@ -575,14 +603,14 @@
 					curveTextTop, params.side == 'left' ? 'CurveTextLeft'
 							: 'CurveTextRight');
 			if (params.curveTextTooltip) {
-				textDiv.tooltip({
+				/* textDiv.tooltip({
 					track : true,
 					content : params.curveTextTooltip,
 					items : '*',
 					tooltipClass : 'Transitions_Tooltip_Small',
 					show : false,
 					hide : false
-				});
+				}); */
 			}
 		}
 		if (params.side == 'left') {
@@ -593,101 +621,101 @@
 			this.rightCurvePositionY += curveHeight + this.curveSpacing;
 		}
 	};
-	
-	Transitions_Canvas.prototype.renderLeftBoxBg = function(context,
-			boxHeight, curveHeight) {
+
+	Transitions_Canvas.prototype.renderLeftBoxBg = function(context, boxHeight,
+			curveHeight) {
 		var leftUpper = {
-				x : this.leftCurveBeginX,
-				y : this.leftBoxPositionY
-			};
-			var leftLower = {
-				x : this.leftCurveBeginX,
-				y : this.leftBoxPositionY + boxHeight
-			};
-			var rightUpper = {
-				x : this.leftCurveEndX,
-				y : this.leftCurvePositionY
-			};
-			var rightLower = {
-				x : this.leftCurveEndX,
-				y : this.leftCurvePositionY + curveHeight
-			};
-			var center = (this.leftCurveBeginX + this.leftCurveEndX) / 2;
-			var cp1Upper = {
-				x : center,
-				y : leftUpper.y
-			};
-			var cp2Upper = {
-				x : center,
-				y : rightUpper.y
-			};
-			var cp1Lower = {
-				x : center,
-				y : rightLower.y
-			};
-			var cp2Lower = {
-				x : center,
-				y : leftLower.y
-			};
-			context.moveTo(leftUpper.x, leftUpper.y);
-			context.bezierCurveTo(cp1Upper.x, cp1Upper.y, cp2Upper.x, cp2Upper.y,
-					rightUpper.x, rightUpper.y);
-			context.lineTo(rightLower.x, rightLower.y);
-			context.bezierCurveTo(cp1Lower.x, cp1Lower.y, cp2Lower.x, cp2Lower.y,
-					leftLower.x, leftLower.y);
-			context.lineTo(leftLower.x - this.boxWidth + 2, leftLower.y);
-			context.lineTo(leftLower.x - this.boxWidth, leftUpper.y);
-			context.lineTo(leftUpper.x, leftUpper.y);
-			context.fill();
+			x : this.leftCurveBeginX,
+			y : this.leftBoxPositionY
+		};
+		var leftLower = {
+			x : this.leftCurveBeginX,
+			y : this.leftBoxPositionY + boxHeight
+		};
+		var rightUpper = {
+			x : this.leftCurveEndX,
+			y : this.leftCurvePositionY
+		};
+		var rightLower = {
+			x : this.leftCurveEndX,
+			y : this.leftCurvePositionY + curveHeight
+		};
+		var center = (this.leftCurveBeginX + this.leftCurveEndX) / 2;
+		var cp1Upper = {
+			x : center,
+			y : leftUpper.y
+		};
+		var cp2Upper = {
+			x : center,
+			y : rightUpper.y
+		};
+		var cp1Lower = {
+			x : center,
+			y : rightLower.y
+		};
+		var cp2Lower = {
+			x : center,
+			y : leftLower.y
+		};
+		context.moveTo(leftUpper.x, leftUpper.y);
+		context.bezierCurveTo(cp1Upper.x, cp1Upper.y, cp2Upper.x, cp2Upper.y,
+				rightUpper.x, rightUpper.y);
+		context.lineTo(rightLower.x, rightLower.y);
+		context.bezierCurveTo(cp1Lower.x, cp1Lower.y, cp2Lower.x, cp2Lower.y,
+				leftLower.x, leftLower.y);
+		context.lineTo(leftLower.x - this.boxWidth + 2, leftLower.y);
+		context.lineTo(leftLower.x - this.boxWidth, leftUpper.y);
+		context.lineTo(leftUpper.x, leftUpper.y);
+		context.fill();
 	};
-	
+
 	Transitions_Canvas.prototype.renderRightBoxBg = function(context,
 			boxHeight, curveHeight) {
 		var leftUpper = {
-				x : this.rightCurveBeginX,
-				y : this.rightCurvePositionY
-			};
-			var leftLower = {
-				x : this.rightCurveBeginX,
-				y : this.rightCurvePositionY + curveHeight
-			};
-			var rightUpper = {
-				x : this.rightCurveEndX,
-				y : this.rightBoxPositionY
-			};
-			var rightLower = {
-				x : this.rightCurveEndX,
-				y : this.rightBoxPositionY + boxHeight
-			};
-			var center = (this.rightCurveBeginX + this.rightCurveEndX) / 2;
-			var cp1Upper = {
-				x : center,
-				y : leftUpper.y
-			};
-			var cp2Upper = {
-				x : center,
-				y : rightUpper.y
-			};
-			var cp1Lower = {
-				x : center,
-				y : rightLower.y
-			};
-			var cp2Lower = {
-				x : center,
-				y : leftLower.y
-			};
-			context.moveTo(leftUpper.x, leftUpper.y);
-			context.bezierCurveTo(cp1Upper.x, cp1Upper.y, cp2Upper.x, cp2Upper.y,
-					rightUpper.x, rightUpper.y);
-			context.lineTo(rightUpper.x + this.boxWidth, rightUpper.y);
-			context.lineTo(rightLower.x + this.boxWidth - 2, rightLower.y);
-			context.lineTo(rightLower.x, rightLower.y);
-			context.bezierCurveTo(cp1Lower.x, cp1Lower.y, cp2Lower.x, cp2Lower.y,
-					leftLower.x, leftLower.y);
-			context.lineTo(leftUpper.x, leftUpper.y);
-			context.fill();
+			x : this.rightCurveBeginX,
+			y : this.rightCurvePositionY
+		};
+		var leftLower = {
+			x : this.rightCurveBeginX,
+			y : this.rightCurvePositionY + curveHeight
+		};
+		var rightUpper = {
+			x : this.rightCurveEndX,
+			y : this.rightBoxPositionY
+		};
+		var rightLower = {
+			x : this.rightCurveEndX,
+			y : this.rightBoxPositionY + boxHeight
+		};
+		var center = (this.rightCurveBeginX + this.rightCurveEndX) / 2;
+		var cp1Upper = {
+			x : center,
+			y : leftUpper.y
+		};
+		var cp2Upper = {
+			x : center,
+			y : rightUpper.y
+		};
+		var cp1Lower = {
+			x : center,
+			y : rightLower.y
+		};
+		var cp2Lower = {
+			x : center,
+			y : leftLower.y
+		};
+		context.moveTo(leftUpper.x, leftUpper.y);
+		context.bezierCurveTo(cp1Upper.x, cp1Upper.y, cp2Upper.x, cp2Upper.y,
+				rightUpper.x, rightUpper.y);
+		context.lineTo(rightUpper.x + this.boxWidth, rightUpper.y);
+		context.lineTo(rightLower.x + this.boxWidth - 2, rightLower.y);
+		context.lineTo(rightLower.x, rightLower.y);
+		context.bezierCurveTo(cp1Lower.x, cp1Lower.y, cp2Lower.x, cp2Lower.y,
+				leftLower.x, leftLower.y);
+		context.lineTo(leftUpper.x, leftUpper.y);
+		context.fill();
 	};
-	
+
 	Transitions_Canvas.prototype.addBoxSpacing = function(spacing, side) {
 		if (side == 'left') {
 			this.leftBoxPositionY += spacing;
@@ -695,7 +723,7 @@
 			this.rightBoxPositionY += spacing;
 		}
 	};
-	
+
 	Transitions_Canvas.prototype.renderLoops = function(share) {
 		var curveHeight = Math.round(this.totalHeightOfConnections * share);
 		curveHeight = Math.max(curveHeight, 1);
@@ -793,7 +821,160 @@
 			this.contextLoops.endPath();
 		}
 	};
-	
+	Transitions.prototype.renderOpenGroup = function(groupName, side, onlyBg) {
+		var self = this;
+		var nbTransitionsVarName = groupName + 'NbTransitions';
+		var nbTransitions = self.model[nbTransitionsVarName];
+		if (nbTransitions == 0) {
+			return;
+		}
+		var totalShare = this.model.getPercentage(nbTransitionsVarName);
+		var details = self.model.getDetailsForGroup(groupName);
+		var gradientItems = this.canvas.createHorizontalGradient('#E3DFD1',
+				'#E8E4D5', side);
+		var gradientOthers = this.canvas.createHorizontalGradient('#F5F3EB',
+				'#E8E4D5', side);
+		var gradientBackground = this.canvas.createHorizontalGradient('#FFFFFF',
+				'#BACFE8', side);
+		if (groupName == this.highlightedGroup) {
+			gradientBackground = this.canvas.createHorizontalGradient('#FFFFFF',
+					'#FAD293', side);
+		}
+		var boxPositionBefore, curvePositionBefore;
+		if (side == 'left') {
+			boxPositionBefore = this.canvas.leftBoxPositionY;
+			curvePositionBefore = this.canvas.leftCurvePositionY;
+		} else {
+			boxPositionBefore = this.canvas.rightBoxPositionY;
+			curvePositionBefore = this.canvas.rightCurvePositionY;
+		}
+		var titleX, titleClass;
+		if (side == 'left') {
+			titleX = this.canvas.leftBoxBeginX + 10;
+			titleClass = 'BoxTextLeft';
+		} else {
+			titleX = this.canvas.rightBoxBeginX - 1;
+			titleClass = 'BoxTextRight';
+		}
+		if (!onlyBg) {
+			var groupTitle = self.model.getGroupTitle(groupName);
+			var titleEl = this.canvas.renderText(groupTitle, titleX,
+					boxPositionBefore + 11, [ titleClass, 'TitleOfOpenGroup' ]);
+			titleEl.hover(function() {
+				self.highlightGroup(groupName, side);
+			}, function() {
+				self.unHighlightGroup(groupName, side);
+			});
+		}
+		this.canvas.addBoxSpacing(34, side);
+		for ( var i = 0; i < details.length; i++) {
+			var data = details[i];
+			var label = (typeof data.url != 'undefined' ? data.url : data.label);
+			label = (typeof label != 'undefined' && label !== null ? label : '');
+			var isOthers = (label == 'Others');
+			var onClick = false;
+			if (!isOthers
+					&& (groupName == 'previousPages' || groupName == 'followingPages')) {
+				onClick = (function(url) {
+					return function() {
+						self.reloadPopover(url);
+					};
+				})(label);
+			} else if (!isOthers
+					&& (groupName == 'outlinks' || groupName == 'websites' || groupName == 'downloads')) {
+				onClick = (function(url) {
+					return function() {
+						self.openExternalUrl(url);
+					};
+				})(label);
+			}
+			var tooltip = Piwik_Transitions_Translations.XOfY;
+			tooltip = '<b>'
+					+ tooltip.replace(/%s/, data.referrals + '</b>').replace(/%s/,
+							nbTransitions);
+			tooltip = this.model.getShareInGroupTooltip(tooltip, groupName);
+			var fullLabel = label;
+			var shortened = false;
+			if ((this.actionType == 'url' && (groupName == 'previousPages' || groupName == 'followingPages'))
+					|| groupName == 'downloads') {
+				label = Piwik_Transitions_Util.shortenUrl(label, true);
+				shortened = true;
+			} else if (groupName == 'outlinks' || groupName == 'websites') {
+				label = Piwik_Transitions_Util.shortenUrl(label);
+				shortened = true;
+			}
+			this.canvas.renderBox({
+				side : side,
+				onlyBg : onlyBg,
+				share : data.percentage / 100 * totalShare,
+				gradient : isOthers ? gradientOthers : gradientItems,
+				boxText : label,
+				boxTextTooltip : isOthers || !shortened ? false : fullLabel,
+				boxTextNumLines : 3,
+				curveText : data.percentage + '%',
+				curveTextTooltip : tooltip,
+				onClick : onClick
+			});
+		}
+		var boxPositionAfter, curvePositionAfter;
+		if (side == 'left') {
+			boxPositionAfter = this.canvas.leftBoxPositionY;
+			curvePositionAfter = this.canvas.leftCurvePositionY;
+			this.canvas.leftBoxPositionY = boxPositionBefore;
+			this.canvas.leftCurvePositionY = curvePositionBefore;
+		} else {
+			boxPositionAfter = this.canvas.rightBoxPositionY;
+			curvePositionAfter = this.canvas.rightCurvePositionY;
+			this.canvas.rightBoxPositionY = boxPositionBefore;
+			this.canvas.rightCurvePositionY = curvePositionBefore;
+		}
+		this.canvas.renderBox({
+			side : side,
+			boxHeight : boxPositionAfter - boxPositionBefore
+					- this.canvas.boxSpacing - 2,
+			curveHeight : curvePositionAfter - curvePositionBefore
+					- this.canvas.curveSpacing,
+			gradient : gradientBackground,
+			bgCanvas : true
+		});
+		var spacing = this.canvas.isNarrowMode() ? 8 : 15;
+		this.canvas.addBoxSpacing(spacing, side);
+	};
+	Transitions.prototype.renderClosedGroup = function(groupName, side,
+			onlyBg) {
+		var self = this;
+		var gradient = this.canvas.createHorizontalGradient('#DDE4ED', '#9BBADE',
+				side);
+		if (groupName == this.highlightedGroup) {
+			gradient = this.canvas.createHorizontalGradient('#FAE2C0', '#FAD293',
+					side);
+		}
+		var nbTransitionsVarName = groupName + 'NbTransitions';
+		if (self.model[nbTransitionsVarName] == 0) {
+			return;
+		}
+		self.canvas.renderBox({
+			side : side,
+			onlyBg : onlyBg,
+			share : self.model.getPercentage(nbTransitionsVarName),
+			gradient : gradient,
+			boxText : self.model.getGroupTitle(groupName),
+			boxTextNumLines : 1,
+			boxTextCssClass : 'SingleLine',
+			boxIcon : 'themes/default/images/plus_blue.png',
+			smallBox : true,
+			onClick : function() {
+				self.unHighlightGroup(groupName, side);
+				self.openGroup(side, groupName);
+			},
+			onMouseOver : function() {
+				self.highlightGroup(groupName, side);
+			},
+			onMouseOut : function() {
+				self.unHighlightGroup(groupName, side);
+			}
+		});
+	};
 	Transitions_Canvas.prototype.clearSide = function(side, onlyBg) {
 		if (side == 'left') {
 			this.contextBgLeft.clearRect(0, 0, this.width, this.height);
@@ -841,7 +1022,18 @@
 			downloads : Piwik_Transitions_Translations.downloadsInline
 		};
 	};
-	
+	Transitions.prototype.openGroup = function(side, groupName) {
+		this.canvas.clearSide(side);
+		if (side == 'left') {
+			this.leftOpenGroup = groupName;
+			this.renderLeftSide();
+		} else {
+			this.rightOpenGroup = groupName;
+			this.renderRightSide();
+		}
+		this.renderLoops();
+		this.canvas.truncateVisibleBoxTexts();
+	};
 	Transitions_Model.prototype.loadData = function(callback) {
 		var self = this;
 		this.pageviews = 0;
@@ -867,104 +1059,103 @@
 		this.followingSiteSearchesNbTransitions = 0;
 		this.followingSiteSearches = [];
 		this.date = '';
-		
-		var report = {
-				"date" : "\u5468\u516d 6\u670822\u65e5",
-				"previousPages" : [],
-				"previousSiteSearches" : [],
-				"pageMetrics" : {
-					"loops" : 4,
-					"pageviews" : 40,
-					"entries" : 36,
-					"exits" : 36
-				},
-				"followingPages" : [],
-				"followingSiteSearches" : [],
-				"outlinks" : [],
-				"downloads" : [],
-				"referrers" : [
-						{
-							"label" : "\u76f4\u63a5\u8f93\u5165",
-							"shortName" : "direct",
-							"visits" : 12,
-							"details" : []
-						},
-						{
-							"label" : "\u6765\u81ea\u641c\u7d22\u5f15\u64ce",
-							"shortName" : "search",
-							"visits" : 21,
-							"details" : [ {
-								"label" : "virtual drums",
-								"referrals" : "14"
-							}, {
-								"label" : "virtual drumming",
-								"referrals" : "1"
-							}, {
-								"label" : "playing a virtual drum",
-								"referrals" : "1"
-							}, {
-								"label" : "virtual drum set",
-								"referrals" : "1"
-							}, {
-								"label" : "virtual drum",
-								"referrals" : "1"
-							}, {
-								"label" : "Others",
-								"referrals" : "3"
-							} ]
-						},
-						{
-							"label" : "\u6765\u81ea\u7f51\u7ad9",
-							"shortName" : "website",
-							"visits" : 3,
-							"details" : [
-									{
-										"label" : "http:\/\/en.eazel.com\/results.php?cat=web&co=mx&lg=es&id=FC19E54B763C438F876AE8E2B7923E4A&oid=25&q=Virtual+Drums.com",
-										"referrals" : "1"
-									},
-									{
-										"label" : "http:\/\/mixidj.delta-search.com\/?q=virtual+drums&s=web&as=3&rlz=0&babsrc=SP_ss",
-										"referrals" : "1"
-									},
-									{
-										"label" : "http:\/\/www.stumbleupon.com\/su\/73BT1B\/:+MtUU3g7:GBpLqbAf\/www.virtual-drums.com\/",
-										"referrals" : "1"
-									} ]
-						} ]
-			};
 
-			self.date = report.date;
-			self.pageviews = report.pageMetrics.pageviews;
-			self.loops = report.pageMetrics.loops;
-			self.exits = report.pageMetrics.exits;
-			for ( var i = 0; i < report.referrers.length; i++) {
-				var referrer = report.referrers[i];
-				if (referrer.shortName == 'direct') {
-					self.directEntries = referrer.visits;
-				} else if (referrer.shortName == 'search') {
-					self.searchEnginesNbTransitions = referrer.visits;
-					self.searchEngines = referrer.details;
-					self.groupTitles.searchEngines = referrer.label;
-				} else if (referrer.shortName == 'website') {
-					self.websitesNbTransitions = referrer.visits;
-					self.websites = referrer.details;
-					self.groupTitles.websites = referrer.label;
-				} else if (referrer.shortName == 'campaign') {
-					self.campaignsNbTransitions = referrer.visits;
-					self.campaigns = referrer.details;
-					self.groupTitles.campaigns = referrer.label;
-				}
+		var report = {
+			"date" : "\u5468\u516d 6\u670822\u65e5",
+			"previousPages" : [ {
+				"label" : "http:\/\/forum.piwik.org\/",
+				"referrals" : 16
+			}, {
+				"label" : "http:\/\/forum.piwik.org\/index.php",
+				"referrals" : 5
+			}, {
+				"label" : "http:\/\/forum.piwik.org\/posting.php",
+				"referrals" : 4
+			}, {
+				"label" : "http:\/\/forum.piwik.org\/read.php?2,104701",
+				"referrals" : 3
+			}, {
+				"label" : "http:\/\/forum.piwik.org\/posting.php?2",
+				"referrals" : 2
+			}, {
+				"label" : "Others",
+				"referrals" : 34
+			} ],
+			"previousSiteSearches" : [],
+			"pageMetrics" : {
+				"loops" : 1,
+				"pageviews" : 68,
+				"entries" : 1,
+				"exits" : 8
+			},
+			"followingPages" : [ {
+				"label" : "http:\/\/forum.piwik.org\/posting.php?2",
+				"referrals" : 5
+			}, {
+				"label" : "http:\/\/forum.piwik.org\/read.php?2,104701",
+				"referrals" : 4
+			}, {
+				"label" : "http:\/\/forum.piwik.org\/control.php?2",
+				"referrals" : 3
+			}, {
+				"label" : "http:\/\/forum.piwik.org\/",
+				"referrals" : 3
+			}, {
+				"label" : "http:\/\/forum.piwik.org\/list.php?2,page=2",
+				"referrals" : 3
+			}, {
+				"label" : "Others",
+				"referrals" : 39
+			} ],
+			"followingSiteSearches" : [],
+			"outlinks" : [ {
+				"label" : "http:\/\/piwik.org\/roadmap\/",
+				"referrals" : 1
+			}, {
+				"label" : "http:\/\/dev.piwik.org\/trac",
+				"referrals" : 1
+			} ],
+			"downloads" : [],
+			"referrers" : [ {
+				"label" : "\u76f4\u63a5\u8f93\u5165",
+				"shortName" : "direct",
+				"visits" : 1,
+				"details" : []
+			} ]
+		};
+
+		self.date = report.date;
+		self.pageviews = report.pageMetrics.pageviews;
+		self.loops = report.pageMetrics.loops;
+		self.exits = report.pageMetrics.exits;
+		for ( var i = 0; i < report.referrers.length; i++) {
+			var referrer = report.referrers[i];
+			if (referrer.shortName == 'direct') {
+				self.directEntries = referrer.visits;
+			} else if (referrer.shortName == 'search') {
+				self.searchEnginesNbTransitions = referrer.visits;
+				self.searchEngines = referrer.details;
+				self.groupTitles.searchEngines = referrer.label;
+			} else if (referrer.shortName == 'website') {
+				self.websitesNbTransitions = referrer.visits;
+				self.websites = referrer.details;
+				self.groupTitles.websites = referrer.label;
+			} else if (referrer.shortName == 'campaign') {
+				self.campaignsNbTransitions = referrer.visits;
+				self.campaigns = referrer.details;
+				self.groupTitles.campaigns = referrer.label;
 			}
-			self.loadAndSumReport(report, 'previousPages');
-			self.loadAndSumReport(report, 'previousSiteSearches');
-			self.loadAndSumReport(report, 'followingPages');
-			self.loadAndSumReport(report, 'followingSiteSearches');
-			self.loadAndSumReport(report, 'downloads');
-			self.loadAndSumReport(report, 'outlinks');
-			
-			callback();
+		}
+		self.loadAndSumReport(report, 'previousPages');
+		self.loadAndSumReport(report, 'previousSiteSearches');
+		self.loadAndSumReport(report, 'followingPages');
+		self.loadAndSumReport(report, 'followingSiteSearches');
+		self.loadAndSumReport(report, 'downloads');
+		self.loadAndSumReport(report, 'outlinks');
+
+		callback();
 	};
-	Transitions_Model.prototype.loadAndSumReport = function (apiData,reportName) {
+	Transitions_Model.prototype.loadAndSumReport = function(apiData, reportName) {
 		var data = this[reportName] = apiData[reportName];
 		var sumVarName = reportName + 'NbTransitions';
 		this[sumVarName] = 0;
@@ -972,33 +1163,34 @@
 			this[sumVarName] += data[i].referrals;
 		}
 	};
-	
-	Transitions_Model.prototype.getTotalNbPageviews = function () {
+
+	Transitions_Model.prototype.getTotalNbPageviews = function() {
 		if (typeof Transitions_Model.totalNbPageviews == 'undefined') {
 			return false;
 		}
 		return Transitions_Model.totalNbPageviews;
 	};
-	
-	Transitions_Model.prototype.getGroupTitle = function (groupName) {
+
+	Transitions_Model.prototype.getGroupTitle = function(groupName) {
 		if (typeof this.groupTitles[groupName] != 'undefined') {
 			return this.groupTitles[groupName];
 		}
 		return groupName;
 	};
-	
-	Transitions_Model.prototype.getShareInGroupTooltip = function (share,
+
+	Transitions_Model.prototype.getShareInGroupTooltip = function(share,
 			groupName) {
 		var tip = this.shareInGroupTexts[groupName];
 		return tip.replace(/%s/, share);
 	};
 
-	Transitions_Model.prototype.getDetailsForGroup = function (groupName) {
+	Transitions_Model.prototype.getDetailsForGroup = function(groupName) {
 		return this.addPercentagesToData(this[groupName]);
 	};
-	
-	Transitions_Model.prototype.getPercentage = function (metric, formatted) {
-		var percentage = (this.pageviews == 0 ? 0 : this[metric] / this.pageviews);
+
+	Transitions_Model.prototype.getPercentage = function(metric, formatted) {
+		var percentage = (this.pageviews == 0 ? 0 : this[metric]
+				/ this.pageviews);
 		if (formatted) {
 			percentage = this.roundPercentage(percentage);
 			percentage += '%';
@@ -1012,11 +1204,12 @@
 			total += parseInt(data[i].referrals, 10);
 		}
 		for (i = 0; i < data.length; i++) {
-			data[i].percentage = this.roundPercentage(data[i].referrals / total);
+			data[i].percentage = this
+					.roundPercentage(data[i].referrals / total);
 		}
 		return data;
 	};
-	
+
 	Transitions_Model.prototype.roundPercentage = function(value) {
 		if (value < .1) {
 			return Math.round(value * 1000) / 10.0;
@@ -1024,76 +1217,75 @@
 			return Math.round(value * 100);
 		}
 	};
-	
-    var Piwik_Transitions_Translations = {
-                "pageviewsInline": "%s 次访问",
-                "loopsInline": "%s 次刷新页面",
-                "fromPreviousPages": "来自内部页面",
-                "fromPreviousPagesInline": "%s 次来自站内页面",
-                "fromPreviousSiteSearches": "来自站内搜索",
-                "fromPreviousSiteSearchesInline": "%s 次来自站内搜索",
-                "fromSearchEngines": "来自搜索引擎",
-                "fromSearchEnginesInline": "%s 次来自搜索引擎",
-                "fromWebsites": "来自网站",
-                "fromWebsitesInline": "%s 次来自外部网站",
-                "fromCampaigns": "来自广告",
-                "fromCampaignsInline": "%s 次来自广告",
-                "directEntries": "直接输入",
-                "directEntriesInline": "%s 次来自直接访问",
-                "toFollowingPages": "转向站内页面",
-                "toFollowingPagesInline": "%s 次转向站内页面",
-                "toFollowingSiteSearches": "站内搜索",
-                "toFollowingSiteSearchesInline": "%s 次站内搜索",
-                "downloads": "下载次数",
-                "downloadsInline": "%s 次下载",
-                "outlinks": "离站链接数量",
-                "outlinksInline": "%s 次离站链接",
-                "exits": "退出页",
-                "exitsInline": "%s 次退出",
-                "bouncesInline": "%s 次跳出",
-                "XOfY": "%s (共 %s)",
-                "XOfAllPageviews": "%s 的本页浏览量",
-                "NoDataForAction": "没有 %s 数据",
-                "NoDataForActionDetails": "本活动在 %s 期间没有被访问过或者不正确。",
-                "NoDataForActionBack": "返回上次的活动",
-                "ShareOfAllPageviews": "本页面被访问 %s 次 (总访问量的 %s)",
-                "DateRange": "报表时间:",
-                "": ""
-        };
-    Piwik_Transitions_Util = {
-    		shortenUrl : function(url, removeDomain) {
-    			if (url == 'Others') {
-    				return url;
-    			}
-    			var urlBackup = url;
-    			url = url.replace(/http(s)?:\/\/(www\.)?/, '');
-    			if (urlBackup == url) {
-    				return url;
-    			}
-    			if (removeDomain) {
-    				url = url.replace(/[^\/]*/, '');
-    				if (url == '/') {
-    					url = urlBackup;
-    				}
-    			}
-    			url = url.replace(/\/$/, '');
-    			return url;
-    		},
-    		replacePlaceholderInHtml : function(container, value, spanClass) {
-    			var span = container.find('span');
-    			if (span.size() == 0) {
-    				var html = container.html().replace(/%s/, '<span></span>');
-    				span = container.html(html).find('span');
-    				if (!spanClass) {
-    					spanClass = 'Transitions_Metric';
-    				}
-    				span.addClass(spanClass);
-    			}
-    			if ($.browser.msie && parseFloat($.browser.version) < 8) {
-    				value += '&nbsp;';
-    			}
-    			span.html(value);
-    		}
-    	};
-    
+
+	var Piwik_Transitions_Translations = {
+		"pageviewsInline" : "%s 次访问",
+		"loopsInline" : "%s 次刷新页面",
+		"fromPreviousPages" : "来自内部页面",
+		"fromPreviousPagesInline" : "%s 次来自站内页面",
+		"fromPreviousSiteSearches" : "来自站内搜索",
+		"fromPreviousSiteSearchesInline" : "%s 次来自站内搜索",
+		"fromSearchEngines" : "来自搜索引擎",
+		"fromSearchEnginesInline" : "%s 次来自搜索引擎",
+		"fromWebsites" : "来自网站",
+		"fromWebsitesInline" : "%s 次来自外部网站",
+		"fromCampaigns" : "来自广告",
+		"fromCampaignsInline" : "%s 次来自广告",
+		"directEntries" : "直接输入",
+		"directEntriesInline" : "%s 次来自直接访问",
+		"toFollowingPages" : "转向站内页面",
+		"toFollowingPagesInline" : "%s 次转向站内页面",
+		"toFollowingSiteSearches" : "站内搜索",
+		"toFollowingSiteSearchesInline" : "%s 次站内搜索",
+		"downloads" : "下载次数",
+		"downloadsInline" : "%s 次下载",
+		"outlinks" : "离站链接数量",
+		"outlinksInline" : "%s 次离站链接",
+		"exits" : "退出页",
+		"exitsInline" : "%s 次退出",
+		"bouncesInline" : "%s 次跳出",
+		"XOfY" : "%s (共 %s)",
+		"XOfAllPageviews" : "%s 的本页浏览量",
+		"NoDataForAction" : "没有 %s 数据",
+		"NoDataForActionDetails" : "本活动在 %s 期间没有被访问过或者不正确。",
+		"NoDataForActionBack" : "返回上次的活动",
+		"ShareOfAllPageviews" : "本页面被访问 %s 次 (总访问量的 %s)",
+		"DateRange" : "报表时间:",
+		"" : ""
+	};
+	Piwik_Transitions_Util = {
+		shortenUrl : function(url, removeDomain) {
+			if (url == 'Others') {
+				return url;
+			}
+			var urlBackup = url;
+			url = url.replace(/http(s)?:\/\/(www\.)?/, '');
+			if (urlBackup == url) {
+				return url;
+			}
+			if (removeDomain) {
+				url = url.replace(/[^\/]*/, '');
+				if (url == '/') {
+					url = urlBackup;
+				}
+			}
+			url = url.replace(/\/$/, '');
+			return url;
+		},
+		replacePlaceholderInHtml : function(container, value, spanClass) {
+			var span = container.find('span');
+			if (span.size() == 0) {
+				var html = container.html().replace(/%s/, '<span></span>');
+				span = container.html(html).find('span');
+				if (!spanClass) {
+					spanClass = 'Transitions_Metric';
+				}
+				span.addClass(spanClass);
+			}
+			if ($.browser.msie && parseFloat($.browser.version) < 8) {
+				value += '&nbsp;';
+			}
+			span.html(value);
+		}
+	};
 </script>
